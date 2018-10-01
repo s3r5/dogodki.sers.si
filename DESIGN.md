@@ -30,3 +30,13 @@ Kartica **povabljeni** omogoča dodajanje uporabnikov na seznam povabljenih.
 
 # Uporabniki in prijava
 Prijava bo potekala preko sistema Armes AAI, ki uporablja protokol SAML2. 
+
+Trenutni najboljši načrt:
+
+Po prvi prijavi preko AAI se ustvari uporabnik. Ob vsaki prijavi se posodobijo vsi lokalni podatki, ki jih lahko dobimo preko AAI (upam da vsaj ime, priimek, e-pošto, oddelek). Vsak oddelek je skupina uporabnikov. 
+
+# Problemi
+> TODO: [Plan] Reši vse probleme z načrtom
+ - Če so **vabila vezana na uporabnika** (povabilo oddelka povabi vsakega uporabnika posebej) **imamo težavo s posodabljanjem** (sistem ne ve, da je uporabnik v drugem oddelku, če se ne uporabnik ne prijavi in informacije posodobi iz AAI).  
+   - Če so **vabila vezana na oddelke** (povabilo oddelka povabi skupino) **je sistem manj fleksibilen**, a *najverjetneje* reši to težavo
+ - Ker **sistem nikoli nima popolnih podatkov o vseh uporabnikih in skupinah** (ker se sproti posodabljajo iz AAI) **je obveščanje neizvedljivo** (če se npr. nek uporabnik ni prijavil odkar je napredoval v naslednji letnik, bi ga sistem še vedno obveščal za dogodke prejšnjega oddelka)
