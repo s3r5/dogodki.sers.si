@@ -27,6 +27,12 @@ Kartica **povabljeni** omogoča dodajanje uporabnikov na seznam povabljenih.
 
 ![Skica pogleda za urejanje dogodka](https://dev.franga2000.com/Ip19/design/view_ustvari_1.jpg)
 
+# Struktura podatkov
+Glavni podatkovni tipi so **Dogodek** (predstavlja en dogodek), **Skupina** (predstavlja eno skupino na enem dogodku) in **Uporabnik** (predstavlja enega uporabnika).
+
+Vsak Dogodek lahko ima več Skupin. Vsak Uporabnik je lahko povabljen k večim Dogodkom. Vsak Uporabnik je lahko pod vsakim Dogodkom prijavljen le v eno Skupino.
+
+![Skica sheme relacijske podatkovne baze](https://dev.franga2000.com/Ip19/design/database_1.jpg)
 
 # Uporabniki in prijava
 Prijava bo potekala preko sistema Armes AAI, ki uporablja protokol SAML2. 
