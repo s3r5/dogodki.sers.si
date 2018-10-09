@@ -25,11 +25,11 @@
 			<div class="collapse navbar-collapse" id="main-nav">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item">
-						<a class="nav-link" href="#"><i class="fas fa-home"></i> Domov</a>
+						<a class="nav-link" href="{% url 'dashboard' %}"><i class="fas fa-home"></i> Domov</a>
 					</li>
 					<!-- TODO: if admin -->
 					<li class="nav-item">
-						<a class="nav-link" href="#"><i class="fas fa-plus-circle"></i> Ustvari dogodek</a>
+						<a class="nav-link" href="{% url 'ustvari_dogodek' %}"><i class="fas fa-plus-circle"></i> Ustvari dogodek</a>
 					</li>
 					<!-- TODO: endif admin-->
 				</ul>

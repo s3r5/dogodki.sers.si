@@ -1,0 +1,85 @@
+{% extends 'dogodki/base.html' %}
+{% block main %}
+<div class="card mb-3">
+	<div class="card-header"><i class="fas fa-info-circle"></i> Podatki o dogodku</div>
+	<div class="card-body row">
+		<div class="col-md-7">
+			<h3>Zimski športni dan</h3>
+			<p class="mb-0">To je pač neki opis</p>
+		</div>
+		<div class="col-md-5">
+			<div><i class="far fa-calendar-alt"></i> Rok prijave: 31. 2. 2018</div>
+			<div><i class="fas fa-list"></i> 4 skupine</div>
+			<div><i class="fas fa-users"></i> 24 mest, 19 na voljo</div>
+			<div class="text-success"><i class="fas fa-list"></i> Skupina: Šah</small></div>
+		</div>
+	</div>
+</div>
+
+<div class="card-columns">
+	<div class="card">
+		<div class="card-header d-flex justify-content-between">
+			<span>
+				<i class="fas fa-users"></i> Smučanje 
+			</span>
+			<span>
+				<span class="badge badge-primary">2 / 6</span>
+			</span>
+		</div>
+		<ul class="list-group list-group-flush">
+			<li class="list-group-item list-group-item-light">Ime Priimek, 4. ag</li>
+			<li class="list-group-item list-group-item-light">Ime Priimek, 4. ag</li>
+			<li class="list-group-item bg-light">
+				<button type="button" class="btn btn-block btn-primary">Prijava</button>
+			</li>
+			
+		</ul>
+	</div>
+	<div class="card text-danger">
+		<div class="card-header d-flex justify-content-between">
+			<span>
+				<i class="fas fa-users"></i> Drsanje 
+			</span>
+			<span>
+				<span class="badge badge-danger">4 / 4</span>
+			</span>
+		</div>
+		<ul class="list-group list-group-flush">
+			<li class="list-group-item list-group-item-light">Ime Priimek, 4. ag</li>
+			<li class="list-group-item list-group-item-light">Ime Priimek, 4. ag</li>
+			<li class="list-group-item list-group-item-light">Ime Priimek, 4. ag</li>
+			<li class="list-group-item list-group-item-light small bg-light text-danger">Ni več prostih mest!</li>
+		</ul>
+	</div>
+	<div class="card text-success border-success">
+		<div class="card-header d-flex justify-content-between">
+			<span>
+				<i class="fas fa-users"></i> Šah 
+			</span>
+			<span>
+				<span class="badge badge-danger">4 / 4</span>
+			</span>
+		</div>
+		<ul class="list-group list-group-flush">
+			<li class="list-group-item list-group-item-light">Ime Priimek, 4. ag</li>
+			<li class="list-group-item list-group-item-light">Ime Priimek, 4. ag</li>
+			<li class="list-group-item list-group-item-light">Ime Priimek, 4. ag</li>
+			<li class="list-group-item list-group-item-success d-flex justify-content-between">
+				Miha Frangež, 4. ag
+				<button type="button" class="btn btn-sm btn-danger">Odjava</button>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<script>
+	// TODO: WYSIWYG editor
+	$("#opis").hide();
+	$("#opis-wysiwyg").show();
+
+	$("#nova-skupina").click(evt => {
+		// TODO: Dodajanje kartice za novo skupino brez kloniranja
+		$($(".skupina").get(-1)).clone().insertBefore("#nova-skupina")
+	});
+</script>
+{% endblock main %}
