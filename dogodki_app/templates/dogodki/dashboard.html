@@ -1,0 +1,44 @@
+{% extends 'dogodki/base.html' %}
+{% block main %}
+<div class="row">
+	<div class="col-sm">
+		<div class="card">
+			<div class="card-header"><i class="far fa-clock"></i> Odprti dogodki</div>
+			<div class="list-group list-group-flush">
+					<a href="#" class="list-group-item list-group-item-action">
+						<h5 class="mb-1">Športni dan &mdash; gimnazija</h5>
+						<small><i class="far fa-calendar-alt"></i> 31. 2. 2018</small>
+						<small class="text-danger"><i class="fas fa-list"></i> Niste še prijavljeni!</small>
+					</a>
+					<a href="#" class="list-group-item list-group-item-action">
+						<h5 class="mb-1">Športni dan &mdash; gimnazija</h5>
+						<small><i class="far fa-calendar-alt"></i> 31. 2. 2018</small>
+						<small class="text-success"><i class="fas fa-list"></i> Smučanje</small>
+					</a>
+				</div>
+		</div>
+	</div>
+	<div class="col-sm">
+		<div class="card">
+			<div class="card-header"><i class="far fa-calendar-alt"></i> Pretekli dogodki</div>
+			<div class="list-group list-group-flush">
+				<a href="#" class="list-group-item list-group-item-action">
+					<h5 class="mb-1">Športni dan &mdash; gimnazija</h5>
+					<small><i class="far fa-calendar-alt"></i> 31. 2. 2018</small>
+					<small><i class="fas fa-list"></i> Smučanje</small>
+					<small class="text-success"><i class="far fa-check-square"></i> opravljeno</small>
+				</a>
+				<a href="#" class="list-group-item list-group-item-action">
+					<h5 class="mb-1">Športni dan &mdash; gimnazija</h5>
+					<small><i class="far fa-calendar-alt"></i> 31. 2. 2018</small>
+					<small><i class="fas fa-list"></i> Smučanje</small>
+					<small class="text-danger"><i class="fas fa-exclamation-triangle"></i> ni opravljeno</small>
+				</a>
+				<a href="#" class="list-group-item">
+					<h5 class="mb-1">Pokaži več...</h5>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock main %}
