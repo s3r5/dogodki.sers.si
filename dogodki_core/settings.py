@@ -85,6 +85,9 @@ DATABASES = {
 	}
 }
 
+# Users and authentication
+
+AUTH_USER_MODEL = 'dogodki_app.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
