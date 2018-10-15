@@ -71,15 +71,4 @@
 		</ul>
 	</div>
 </div>
-
-<script>
-	// TODO: WYSIWYG editor
-	$("#opis").hide();
-	$("#opis-wysiwyg").show();
-
-	$("#nova-skupina").click(evt => {
-		// TODO: Dodajanje kartice za novo skupino brez kloniranja
-		$($(".skupina").get(-1)).clone().insertBefore("#nova-skupina")
-	});
-</script>
 {% endblock main %}
