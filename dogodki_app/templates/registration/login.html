@@ -1,0 +1,58 @@
+{% extends 'dogodki/base.html' %}
+{% load static %}
+{% block main %}
+<div class="row">
+	<div class="col-md-6">
+		<div class="card">
+			<div class="card-header"><i class="fas fa-key"></i> Lokalna prijava</div>
+			<div class="card-body">
+				<form action="" method="POST">
+					{% csrf_token %}
+{% for error in form.non_field_errors %}
+					<div class="alert alert-danger">
+						{{ error|escape }}
+					</div>
+{% endfor %}
+{% for field in form %}{% for error in field.errors %}
+					<div class="alert alert-danger">
+						<strong>{{ field.name }} </strong> - {{ error|escape }}
+					</div>
+{% endfor %}{% endfor %}
+					<div class="form-group input-group">
+						<label for="username" class="sr-only">Uporabniško ime</label>
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-user"></i></span>
+						</div>
+						<input type="text" name="username" class="form-control" placeholder="Uporabniško ime" required>
+					</div>
+					
+					<div class="form-group input-group">
+						<label for="password" class="sr-only">Geslo</label>
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-asterisk"></i></span>
+						</div>
+						<input type="password" name="password" class="form-control" placeholder="Geslo" required>
+					</div>
+
+					<button type="submit" class="btn btn-primary float-right"><i class="fas fa-sign-in-alt"></i> Prijava</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="card">
+			<div class="card-header"><i class="far fa-address-card"></i> Lokalna prijava AAI Prijava</div>
+			<div class="card-body text-center">
+				<div class="alert alert-danger">
+					<strong>AAI Prijava še ni na voljo.</strong><br>
+					Med tem se lahko prijavite z lokalnim računom.
+				</div>
+				<a href="#TODO:AAI">
+					<img src="{% static 'aai_prijava.png' %}">
+				</a>
+			</div>
+		</div>
+	</div>
+	
+</div>
+{% endblock main %}

@@ -34,14 +34,21 @@
 					<!-- TODO: endif admin-->
 				</ul>
 				<ul class="navbar-nav">
-					<!-- TODO: if logged in -->
+{% if request.user.is_authenticated %}
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="https://example.com" id="user-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user"></i> <!--TODO: {{username}} -->username</a>
+						<a class="nav-link dropdown-toggle" href="" id="user-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user"></i> {{ request.user.username }}</a>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="user-dropdown">
-							<a class="dropdown-item text-danger" href="#"><i class="fas fa-sign-out-alt"></i> Odjava</a>
+{% if request.user.is_staff %}
+							<a class="dropdown-item text-danger" href="{% url 'admin:index' %}"><i class="fas fa-wrench"></i> Administracija</a>
+{% endif %}
+							<a class="dropdown-item text-danger" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Odjava</a>
 						</div>
 					</li>
-					<!-- TODO: endif logged in -->
+{% else %}
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Prijava</a>
+					</li>
+{% endif %}
 				</ul>
 			</div>
 		</div>
