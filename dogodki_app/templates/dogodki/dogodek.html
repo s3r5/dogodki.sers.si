@@ -4,12 +4,12 @@
 	<div class="card-header"><i class="fas fa-info-circle"></i> Podatki o dogodku</div>
 	<div class="card-body row">
 		<div class="col-md-7">
-			<h3>Zimski športni dan</h3>
-			<p class="mb-0">To je pač neki opis</p>
+			<h3>{{ dogodek.naslov }}</h3>
+			<p class="mb-0">{{ dogodek.opis }}</p>
 		</div>
 		<div class="col-md-5">
-			<div><i class="far fa-calendar-alt"></i> Rok prijave: 31. 2. 2018</div>
-			<div><i class="fas fa-list"></i> 4 skupine</div>
+			<div><i class="far fa-calendar-alt"></i> Rok prijave: {{ dogodek.rok_prijave }}</div>
+			<div><i class="fas fa-list"></i> {{ dogodek.skupine.count }} {{ dogodek.skupine.count | pluralize:"skupina,skupin" }}</div> <!-- TODO: pluralize_pl -->
 			<div><i class="fas fa-users"></i> 24 mest, 19 na voljo</div>
 			<div class="text-success"><i class="fas fa-list"></i> Skupina: Šah</small></div>
 		</div>
@@ -17,13 +17,14 @@
 </div>
 
 <div class="card-columns">
+{% for skupina in dogodek.skupine.all %}
 	<div class="card">
 		<div class="card-header d-flex justify-content-between">
 			<span>
-				<i class="fas fa-users"></i> Smučanje 
+				<i class="fas fa-users"></i> {{ skupina.naslov }} 
 			</span>
 			<span>
-				<span class="badge badge-primary">2 / 6</span>
+				<span class="badge badge-primary">2 / {{ skupina.število_mest }}</span>
 			</span>
 		</div>
 		<ul class="list-group list-group-flush">
@@ -35,6 +36,7 @@
 			
 		</ul>
 	</div>
+{% endfor %}
 	<div class="card text-danger">
 		<div class="card-header d-flex justify-content-between">
 			<span>

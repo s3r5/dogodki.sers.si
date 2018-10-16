@@ -12,7 +12,7 @@ import dogodki_app.views
 urlpatterns = [
 	path("", dogodki_app.views.DashboardView.as_view(), name="dashboard"),
 	path("dogodek/ustvari", dogodki_app.views.UstvariDogodekView.as_view(), name="ustvari_dogodek"),
-	path("dogodek/<int:id>", dogodki_app.views.DogodekView.as_view(), name="dogodek"),
+	path("dogodek/<int:pk>", dogodki_app.views.DogodekView.as_view(), name="dogodek"),
 	path("prijava", auth_views.LoginView.as_view(), name='login'),
     path("odjava", auth_views.LogoutView.as_view(), name='logout'),
 	path('admin/', admin.site.urls),
