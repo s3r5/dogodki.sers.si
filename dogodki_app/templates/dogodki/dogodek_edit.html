@@ -1,50 +1,48 @@
 {% extends 'dogodki/base.html' %}
 {% block main %}
-<div class="row">
+<form action="" method="POST" class="row">
+{{ formset.management_form }}
+	{% csrf_token %}
 	<div class="col-md">
 		<div class="card mb-3">
 			<div class="card-header"><i class="far fa-clock"></i> Ustvari dogodek</div>
 			<div class="card-body">
-				<form>
-					<div class="form-group row">
-						<label for="naslov" class="col-sm-3 col-form-label" required>Naslov:</label>
-						<div class="col-sm">
-							<input type="text" class="form-control" id="naslov" value="">
-						</div>
+{% for error in form.non_field_errors %}
+				<div class="alert alert-danger">
+					{{ error|escape }}
+				</div>
+{% endfor %}
+{% for field in form %}{% for error in field.errors %}
+				<div class="alert alert-danger">
+					<strong>{{ field.name }} </strong> - {{ error|escape }}
+				</div>
+{% endfor %}{% endfor %}
+
+				<div class="form-group row">
+					<label for="naslov" class="col-sm-3 col-form-label" required>Naslov:</label>
+					<div class="col-sm">
+						<input type="text" class="form-control" name="naslov" value="{{ form.naslov.value|default:"" }}" required>
 					</div>
-					<div class="form-group row">
-						<label for="datum" class="col-sm-3 col-form-label">Datum:</label>
-						<div class="col-sm">
-							<input type="date" class="form-control" id="datum" required>
-						</div>
+				</div>
+				<div class="form-group row">
+					<label for="datum" class="col-sm-3 col-form-label">Datum:</label>
+					<div class="col-sm">
+						<input type="date" class="form-control" name="datum" value="{{ form.datum.value|date:"Y-m-d"|default:"" }}" required>
 					</div>
-					<div class="form-group row">
-						<label for="rok" class="col-sm-3 col-form-label">Rok prijave:</label>
-						<div class="col-sm">
-							<input type="date" class="form-control" id="rok" required>
-						</div>
+				</div>
+				<div class="form-group row">
+					<label for="rok_prijave" class="col-sm-3 col-form-label">Rok prijave:</label>
+					<div class="col-sm">
+						<input type="date" class="form-control" name="rok_prijave" value="{{ form.rok_prijave.value|date:"Y-m-d"|default:"" }}" required>
 					</div>
-					<div class="form-group" style="margin: 0 -15px">
-						<label for="opis" class="col-sm-3 col-form-label">Opis:</label>
-						<div class="col-sm">
-							<textarea class="form-control" id="opis" required></textarea>
-						</div>
-						<div class="card m-3" style="display: none" id="opis-wysiwyg">
-							<div class="card-header p-0">
-								<div class="btn-group" role="group" aria-label="First group">
-									<button type="button" data-toggle="button" class="btn btn-sm btn-light active"><i class="fas fa-bold"></i></button>
-									<button type="button" data-toggle="button" class="btn btn-sm btn-light"><i class="fas fa-italic"></i></button>
-									<button type="button" data-toggle="button" class="btn btn-sm btn-light"><i class="fas fa-underline"></i></button>
-									<button type="button" data-toggle="button" class="btn btn-sm btn-light"><i class="fas fa-link"></i></button>
-								</div>
-							</div>
-							<div class="card-body form-control pb-5" style="border: none; z-index: 1;" contenteditable="true">
-								&nbsp;
-							</div>
-						</div>
+				</div>
+				<div class="form-group" style="margin: 0 -15px">
+					<label for="opis" class="col-sm-3 col-form-label">Opis:</label>
+					<div class="col-sm">
+						<textarea class="form-control" name="opis">{{ form.opis.value|default:"" }}</textarea>
 					</div>
-					<button type="submit" class="btn btn-primary float-right"><i class="fas fa-save"></i> Shrani</button>
-				</form>
+				</div>
+				<button type="submit" class="btn btn-primary mt-4 float-right"><i class="fas fa-save"></i> Shrani</button>
 			</div>
 		</div>
 
@@ -58,38 +56,23 @@
 
 	<div class="col-md">
 		<h3>Skupine</h3>
-		<form class="card mb-3 skupina">
-			<div class="card-header form-inline">
-				<i class="fas fa-users"></i> <input type="text" class="form-control-plaintext ml-1 p-0" id="sk1-naslov" style="width: auto;" value="" placeholder="Naslov">
-			</div>
-			<div class="card-body">
-				<div class="form-group row">
-					<label for="sk1-mesta" class="col-sm-3 col-form-label">Število mest:</label>
-					<div class="col-sm">
-						<input type="number" class="form-control" id="sk1-mesta" min=1 value=1 required>
-					</div>
-				</div>
-				<div class="form-group" style="margin: 0 -15px">
-					<label for="sk1-opis" class="col-sm-3 col-form-label">Opis:</label>
-					<div class="col-sm">
-						<textarea class="form-control" id="sk1-opis" required></textarea>
-					</div>
-				</div>
-			</div>
-		</form>
+{% for skupina in formset %}{% with counter=forloop.counter0 %}
+{% include "dogodki/skupina_form.html" %}
+{% endwith %}{% endfor %}
 		<button type="button" class="btn btn-lg btn-block mt-3 btn-light" id="nova-skupina"><i class="fas fa-plus"></i></button>
 	</div>
-</div>
+</form>
 
 <script>
 window.onload = () => {
-	// TODO: WYSIWYG editor
-	$("#opis").hide();
-	$("#opis-wysiwyg").show();
-
 	$("#nova-skupina").click(evt => {
-		// TODO: Dodajanje kartice za novo skupino brez kloniranja
-		$($(".skupina").get(-1)).clone().insertBefore("#nova-skupina")
+		let counter = parseInt($("#id_skupine-TOTAL_FORMS").val());
+{% with "${counter}" as counter %}
+		let template = `{% include "dogodki/skupina_form.html" %}`;
+{% endwith %}
+		$(template).insertBefore("#nova-skupina");
+
+		$("#id_skupine-TOTAL_FORMS").val(counter + 1);
 	});
 };
 </script>

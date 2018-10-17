@@ -1,7 +1,10 @@
 {% extends 'dogodki/base.html' %}
 {% block main %}
 <div class="card mb-3">
-	<div class="card-header"><i class="fas fa-info-circle"></i> Podatki o dogodku</div>
+	<div class="card-header">
+		<i class="fas fa-info-circle"></i> Podatki o dogodku
+		<a href="{% url "uredi_dogodek" dogodek.pk %}" class="btn btn-primary btn-sm float-right"><i class="fas fa-edit"></i> Uredi</button></a>
+	</div>
 	<div class="card-body row">
 		<div class="col-md-7">
 			<h3>{{ dogodek.naslov }}</h3>
