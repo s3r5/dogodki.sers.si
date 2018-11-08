@@ -1,37 +1,15 @@
 """
 Django settings for dogodki_django project.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/2.1/topics/settings/
-
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/2.1/ref/settings/
 """
-
-#
-# TODO: A proper configuration system (12-factor?)
-#
-
 import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+import environ
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
-# TODO: [Prod] Fix before going into production
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '%b_k!=&vl9m%y+&xog_zn4%^kcq=-mx#q1uc37my^7^#+e=v48'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
-
-# Application definition
+##################
+#                #
+#   APP CONFIG   #
+#                #
+##################
 
 INSTALLED_APPS = [
 	"dogodki_app",
@@ -44,10 +22,6 @@ INSTALLED_APPS = [
 	'django.contrib.staticfiles',
 ]
 
-if DEBUG:
-	INSTALLED_APPS.insert(1, "debug_toolbar")
-	INTERNAL_IPS = ["127.0.0.1"]
-
 MIDDLEWARE = [
 	'django.middleware.security.SecurityMiddleware',
 	'django.contrib.sessions.middleware.SessionMiddleware',
@@ -57,13 +31,6 @@ MIDDLEWARE = [
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-if DEBUG:
-	MIDDLEWARE += [
-		'debug_toolbar.middleware.DebugToolbarMiddleware'
-	]
-
-ROOT_URLCONF = 'dogodki_core.urls'
 
 TEMPLATES = [
 	{
@@ -81,25 +48,89 @@ TEMPLATES = [
 	},
 ]
 
+# URLs
+ROOT_URLCONF = 'dogodki_core.urls'
+
+STATIC_URL = "/static/"
+MEDIA_URL = "/media/"
+
 WSGI_APPLICATION = 'dogodki_core.wsgi.application'
 
+#######################
+#                     #
+#   INSTANCE CONFIG   #
+#                     #
+#######################
+
+root = environ.Path(__file__) - 2
+
+# Fetch env vars
+os.environ.setdefault("ENV_FILE", root(".env"))
+env = environ.Env(
+	DEBUG=(bool, False),
+	DEBUG_IPS=(list, []),
+	ALLOWED_HOSTS=(list, []),
+	ADMINS=(list, ["admin"])
+)
+if os.path.isfile(os.environ["ENV_FILE"]):
+	env.read_env(os.environ["ENV_FILE"])
+
+# File storage
+STATIC_ROOT = root(env("STATIC_DIR", default="../static"))
+MEDIA_ROOT = root(env("MEDIA_DIR", default="../media"))
 
 # Database
-# https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
 DATABASES = {
-	'default': {
-		'ENGINE': 'django.db.backends.sqlite3',
-		'NAME': os.path.join(BASE_DIR, '.local/db.sqlite3'),
-	}
+	"default": env.db() if env("DATABASE_URL", default=None) else {}
 }
 
-# Users and authentication
+# Cache
+if env("CACHE_URL", default=None) :
+	CACHES = {
+		'default': env.cache()
+	}
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
+
+# E-mail
+EMAIL_CONFIG = env.email_url("EMAIL_URL", default="filemail://../../filemail/")
+vars().update(EMAIL_CONFIG)
+DEFAULT_FROM_EMAIL = EMAIL_CONFIG["EMAIL_HOST_USER"]
+SERVER_MAIL = EMAIL_CONFIG["EMAIL_HOST_USER"]
+
+# Misc
+SECRET_KEY = env("SECRET_KEY", default="NOT_NEEDED_FOR_DOCKER_BUILDS")
+ALLOWED_HOSTS = env("ALLOWED_HOSTS", default=[])
+
+#############
+#           #
+#   DEBUG   #
+#           #
+#############
+
+DEBUG = env("DEBUG")
+
+# Debug Toolbar
+if DEBUG:
+	MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
+	INSTALLED_APPS += [
+		"debug_toolbar"
+	]
+
+INTERNAL_IPS = [
+	"127.0.0.1",
+] + env("DEBUG_IPS")
+
+###############
+#             #
+#   PRIJAVA   #
+#             #
+###############
 
 AUTH_USER_MODEL = 'dogodki_app.User'
 
-# Password validation
-# https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = 'home'
 
 AUTH_PASSWORD_VALIDATORS = [
 	{
@@ -116,22 +147,19 @@ AUTH_PASSWORD_VALIDATORS = [
 	},
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/2.1/topics/i18n/
-
-LANGUAGE_CODE = 'sl-SI'
-
-TIME_ZONE = 'CET'
+##################
+#                #
+#   JEZIK, ČAS   #
+#                #
+##################
 
 USE_I18N = True
-
 USE_L10N = True
 
+# Formati
+DATE_FORMAT = "j. N Y"
+DATETIME_FORMAT = "j. N Y H:m"
+
+# Čas
+TIME_ZONE = 'CET'
 USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.1/howto/static-files/
-
-STATIC_URL = '/static/'
