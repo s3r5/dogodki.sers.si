@@ -1,0 +1,12 @@
+[[source]]
+url = "https://pypi.org/simple"
+name = "pypi"
+verify_ssl = true
+
+[packages]
+django = "*"
+django-environ = "*"
+
+[dev-packages]
+pylint = "*"
+django-debug-toolbar = "*"
