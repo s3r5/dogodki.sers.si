@@ -130,7 +130,8 @@ INTERNAL_IPS = [
 AUTH_USER_MODEL = 'dogodki_app.User'
 
 LOGIN_URL = "login"
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = "dashboard"
+LOGOUT_REDIRECT_URL = "dashboard"
 
 AUTH_PASSWORD_VALIDATORS = [
 	{
