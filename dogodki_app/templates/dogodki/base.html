@@ -27,11 +27,11 @@
 					<li class="nav-item">
 						<a class="nav-link" href="{% url 'dashboard' %}"><i class="fas fa-home"></i> Domov</a>
 					</li>
-					<!-- TODO: if admin -->
+{% if request.user.is_staff %}
 					<li class="nav-item">
 						<a class="nav-link" href="{% url 'ustvari_dogodek' %}"><i class="fas fa-plus-circle"></i> Ustvari dogodek</a>
 					</li>
-					<!-- TODO: endif admin-->
+{% endif %}
 				</ul>
 				<ul class="navbar-nav">
 {% if request.user.is_authenticated %}
