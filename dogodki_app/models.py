@@ -14,6 +14,14 @@ class Dogodek(models.Model):
 	rok_prijave = models.DateTimeField()
 	opis = models.TextField(null=True, blank=False)
 
+	def prijavljeni(self):
+		return self.povabljeni.exclude(skupina__isnull=False)
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context["prijavljeni"] = self.prijavljeni()
+		return context
+
 	class Meta:
 		verbose_name = "Dogodek"
 		verbose_name_plural = "Dogodki"
@@ -37,3 +45,16 @@ class Skupina(models.Model):
 
 	def __str__(self):
 		return "%s: %s" % (self.dogodek, self.naslov)
+
+class Povabilo(models.Model):
+	uporabnik = models.ForeignKey(User, on_delete=models.CASCADE)
+	skupina = models.ForeignKey(Skupina, blank=True, null=True, related_name="prijavljeni", on_delete=models.CASCADE)
+
+	dogodek = models.ForeignKey(Dogodek, on_delete=models.CASCADE, related_name="povabljeni")
+
+	class Meta:
+		verbose_name = "Povabilo"
+		verbose_name_plural = "Povabila"
+
+	def __str__(self):
+		return "%s: %s (%s)" % (self.dogodek, self.uporabnik, self.skupina)

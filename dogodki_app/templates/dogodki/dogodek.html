@@ -21,6 +21,7 @@
 </div>
 
 <div class="card-columns">
+{% regroup dogodek.prijavljeni by skupina as po_skupinah %}
 {% for skupina in dogodek.skupine.all %}
 	<div class="card">
 		<div class="card-header d-flex justify-content-between">
@@ -31,6 +32,7 @@
 				<span class="badge badge-primary">2 / {{ skupina.število_mest }}</span>
 			</span>
 		</div>
+		{{ skupina.prijavljeni }}
 		<ul class="list-group list-group-flush">
 			<li class="list-group-item list-group-item-light">Ime Priimek, 4. ag</li>
 			<li class="list-group-item list-group-item-light">Ime Priimek, 4. ag</li>
