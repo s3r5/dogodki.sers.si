@@ -6,21 +6,15 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 class User(AbstractUser):
-	pass
+	
+	def __str__(self):
+		return self.first_name + " " + self.last_name
 
 class Dogodek(models.Model):
 	naslov = models.CharField(max_length=50)
 	datum = models.DateField()
 	rok_prijave = models.DateTimeField()
 	opis = models.TextField(null=True, blank=False)
-
-	def prijavljeni(self):
-		return self.povabljeni.exclude(skupina__isnull=False)
-
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context["prijavljeni"] = self.prijavljeni()
-		return context
 
 	class Meta:
 		verbose_name = "Dogodek"

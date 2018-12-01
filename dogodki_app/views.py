@@ -16,6 +16,40 @@ class DogodekView(DetailView):
 	template_name = "dogodki/dogodek.html"
 	model = models.Dogodek
 
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		
+		obj_skupine = []
+		found = False
+		for skupina in self.object.skupine.all():
+			obj_skupina = {
+				"naslov": skupina.naslov,
+				"število_mest": skupina.število_mest,
+				"število_prijavljenih": skupina.prijavljeni.count(),
+				"prijavljeni": [],
+				"moja": False
+			}
+
+			obj_skupina["polna"] = obj_skupina["število_mest"] - obj_skupina["število_prijavljenih"] < 1
+
+			for prijava in skupina.prijavljeni.all():
+				obj_prijava = {
+					"uporabnik": prijava.uporabnik,
+					"jaz": False
+				}
+
+				if not found and prijava.uporabnik == self.request.user:
+					obj_prijava["jaz"] = True
+					obj_skupina["moja"] = True
+					found = True
+
+				obj_skupina["prijavljeni"].append(obj_prijava)
+
+			obj_skupine.append(obj_skupina)
+
+		context["skupine"] = obj_skupine
+		return context
+
 class EditDogodekMixin(FormsetMixin, PermissionRequiredMixin):
 	template_name = "dogodki/dogodek_edit.html"
 	model = models.Dogodek
