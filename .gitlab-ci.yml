@@ -1,0 +1,18 @@
+image: docker:git
+services:
+- docker:dind
+
+stages:
+- build
+# TODO: Tests!
+
+variables:
+    GITLAB_IMAGE: registry.gitlab.com/franga2000/ip-2019
+
+build:
+    stage: build
+    script:
+        - docker build -t $GITLAB_IMAGE .
+
+        - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+        - docker push $GITLAB_IMAGE
