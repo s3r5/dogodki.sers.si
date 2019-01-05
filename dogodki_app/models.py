@@ -16,6 +16,16 @@ class Dogodek(models.Model):
 	rok_prijave = models.DateTimeField()
 	opis = models.TextField(null=True, blank=False)
 
+	@property
+	def število_mest(self):
+		# TODO: Optimizacija?
+		return sum((skupina.število_mest for skupina in self.skupine.all()))
+
+	@property
+	def število_navoljo(self):
+		# TODO: Optimizacija?
+		return self.število_mest - sum((skupina.prijavljeni.count() for skupina in self.skupine.all()))
+
 	class Meta:
 		verbose_name = "Dogodek"
 		verbose_name_plural = "Dogodki"

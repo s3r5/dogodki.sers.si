@@ -18,6 +18,8 @@ class DogodekView(DetailView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
+
+		context["povabilo"] = models.Povabilo.objects.get(dogodek=self.object, uporabnik=self.request.user)
 		
 		obj_skupine = []
 		found = False

@@ -14,8 +14,8 @@
 		<div class="col-md-5">
 			<div><i class="far fa-calendar-alt"></i> Rok prijave: {{ dogodek.rok_prijave }}</div>
 			<div><i class="fas fa-list"></i> {{ dogodek.skupine.count }} {{ dogodek.skupine.count | pluralize:"skupina,skupin" }}</div> <!-- TODO: pluralize_pl -->
-			<div><i class="fas fa-users"></i> 24 mest, 19 na voljo</div>
-			<div class="text-success"><i class="fas fa-list"></i> Skupina: Šah</small></div>
+			<div><i class="fas fa-users"></i> {{ dogodek.število_mest }} mest, {{ dogodek.število_navoljo }} na voljo</div>
+			<div class="text-{{ povabilo.skupina|yesno:"success,danger"}}"><i class="fas fa-list"></i> Skupina: {{ povabilo.skupina.naslov|default:"niste še prijavljeni!" }}</small></div>
 		</div>
 	</div>
 </div>
@@ -45,7 +45,7 @@
 	{% if not skupina.moja %}
 		{% if skupina.polna %}
 			<li class="list-group-item list-group-item-light small bg-light text-danger">Ni več prostih mest!</li>
-		{% else %}
+		{% elif not povabilo.skupina %}
 			<li class="list-group-item bg-light">
 				<button type="button" class="btn btn-block btn-primary">Prijava</button>
 			</li>
