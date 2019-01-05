@@ -14,6 +14,7 @@ import environ
 INSTALLED_APPS = [
 	"dogodki_app",
 
+	"django.contrib.sites",
 	'django.contrib.admin',
 	'django.contrib.auth',
 	'django.contrib.contenttypes',
@@ -70,10 +71,14 @@ env = environ.Env(
 	DEBUG=(bool, False),
 	DEBUG_IPS=(list, []),
 	ALLOWED_HOSTS=(list, []),
-	ADMINS=(list, ["admin"])
+	ADMINS=(list, ["admin"]),
+	SITE_ID=int
 )
 if os.path.isfile(os.environ["ENV_FILE"]):
 	env.read_env(os.environ["ENV_FILE"])
+
+# Sites
+SITE_ID = env("SITE_ID")
 
 # File storage
 STATIC_ROOT = root(env("STATIC_DIR", default="../static"))
