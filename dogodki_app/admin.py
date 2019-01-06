@@ -5,6 +5,7 @@ from .models import *
 # Register your models here.
 
 admin.site.register(User, UserAdmin)
+UserAdmin.fieldsets += ('Custom fields set', {'fields': ('oddelek',)}),
 
 @admin.register(Dogodek)
 class DogodekProfileAdmin(admin.ModelAdmin):
