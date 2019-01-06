@@ -4,10 +4,16 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.forms import inlineformset_factory, modelform_factory
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 
-from dogodki_app import models
-from dogodki_app.util import FormsetMixin
+from . import models
+from .util import FormsetMixin
 
 # Create your views here.
+
+class ProfilView(DetailView):
+	template_name = "dogodki/profil.html"
+	
+	def get_object(self, **kwargs):
+		return self.request.user
 
 class DashboardView(TemplateView):
 	template_name = "dogodki/dashboard.html"

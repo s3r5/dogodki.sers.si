@@ -1,0 +1,30 @@
+{% extends 'dogodki/base.html' %}
+{% block title %}Profil · {{ block.super }}{% endblock title %}
+{% load static %}
+{% block main %}
+<div class="row justify-content-center">
+	<div class="col-md-6">
+		<div class="card m-auto">
+			<div class="card-header"><i class="far fa-address-card"></i> Podatki o uporabniku</div>
+			<div class="card-body">
+				<div class="row">
+					<dl class="col">
+						<dt>Ime:</dt>
+						<dd>{{ user.first_name }}</dd>
+						<dt>Priimek:</dt>
+						<dd>{{ user.last_name }}</dd>
+						<dt>Oddelek:</dt>
+						<dd>{{ user.oddelek }}</dd>
+					</dl>
+					<dl class="col">
+						<dt>Uporabniško ime:</dt>
+						<dd>{{ user.username }}</dd>
+						<dt>E-poštni naslov:</dt>
+						<dd>{{ user.email }}</dd>
+					</dl>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock main %}
