@@ -3,6 +3,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.forms import inlineformset_factory, modelform_factory
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 
 from dogodki_app import models
 from dogodki_app.util import FormsetMixin
@@ -19,8 +20,12 @@ class DogodekView(DetailView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 
-		context["povabilo"] = models.Povabilo.objects.get(dogodek=self.object, uporabnik=self.request.user)
-		
+		try:
+			context["povabilo"] = models.Povabilo.objects.get(dogodek=self.object, uporabnik=self.request.user)
+		except:
+			if not self.request.user.is_staff:
+				raise PermissionDenied()
+
 		obj_skupine = []
 		found = False
 		for skupina in self.object.skupine.all():
