@@ -5,13 +5,28 @@ from django.forms import inlineformset_factory, modelform_factory
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 
+from datetime import date
+
 from dogodki_app import models
 from dogodki_app.util import FormsetMixin
 
 # Create your views here.
 
-class DashboardView(TemplateView):
+class DashboardView(LoginRequiredMixin, TemplateView):
 	template_name = "dogodki/dashboard.html"
+
+	def get_context_data(self):
+		povabila = models.Povabilo.objects.filter(uporabnik=self.request.user)
+		# TODO: Administratorji naj vidijo vse dogodke 
+		# Spodnje zahteva PostgreSQL!
+		# if self.request.user.is_staff:
+		# 	povabila = models.Povabilo.objects.distinct("dogodek")
+		# Možna alternativa? https://stackoverflow.com/a/49291760
+		danes = date.today()
+		return {
+			"odprta_povabila": povabila.filter(dogodek__datum__gte=danes),
+			"pretekla_povabila": povabila.filter(dogodek__datum__lt=danes)
+		}
 
 class DogodekView(DetailView):
 	template_name = "dogodki/dogodek.html"

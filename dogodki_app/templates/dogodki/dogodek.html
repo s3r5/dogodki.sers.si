@@ -4,7 +4,7 @@
 <div class="card mb-3">
 	<div class="card-header">
 		<i class="fas fa-info-circle"></i> Podatki o dogodku
-		<a href="{% url "uredi_dogodek" dogodek.pk %}" class="btn btn-primary btn-sm float-right"><i class="fas fa-edit"></i> Uredi</button></a>
+		<a href="{% url "uredi_dogodek" dogodek.pk %}" class="btn btn-primary btn-sm float-right"><i class="fas fa-edit"></i> Uredi</a>
 	</div>
 	<div class="card-body row">
 		<div class="col-md-7">
@@ -15,7 +15,7 @@
 			<div><i class="far fa-calendar-alt"></i> Rok prijave: {{ dogodek.rok_prijave }}</div>
 			<div><i class="fas fa-list"></i> {{ dogodek.skupine.count }} {{ dogodek.skupine.count | pluralize:"skupina,skupin" }}</div> <!-- TODO: pluralize_pl -->
 			<div><i class="fas fa-users"></i> {{ dogodek.število_mest }} mest, {{ dogodek.število_navoljo }} na voljo</div>
-			<div class="text-{{ povabilo.skupina|yesno:"success,danger"}}"><i class="fas fa-list"></i> Skupina: {{ povabilo.skupina.naslov|default:"niste še prijavljeni!" }}</small></div>
+			<div class="text-{{ povabilo.skupina|yesno:"success,danger"}}"><i class="fas fa-list"></i> Skupina: {{ povabilo.skupina.naslov|default:"niste še prijavljeni!" }}</div>
 		</div>
 	</div>
 </div>
