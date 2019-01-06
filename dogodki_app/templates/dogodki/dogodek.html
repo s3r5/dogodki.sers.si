@@ -20,7 +20,8 @@
 	</div>
 </div>
 
-<div class="card-columns">
+<form method="POST" action="{% url 'dogodek_prijava' dogodek.pk %}" class="card-columns">
+{% csrf_token %}
 {% for skupina in skupine %}
 	<div class="card{% if skupina.polna %} text-danger{% endif %}{% if skupina.moja %} text-success border-success{% endif %}">
 		<div class="card-header d-flex justify-content-between">
@@ -36,7 +37,7 @@
 		{% if prijava.jaz %}
 			<li class="list-group-item list-group-item-success d-flex justify-content-between">
 				{{ prijava.uporabnik }}
-				<button type="button" class="btn btn-sm btn-danger">Odjava</button>
+				<button type="submit" name="skupina" value="" class="btn btn-sm btn-danger">Odjava</button>
 			</li>
 		{% else %}
 			<li class="list-group-item list-group-item-light">{{ prijava.uporabnik }}</li>
@@ -47,12 +48,12 @@
 			<li class="list-group-item list-group-item-light small bg-light text-danger">Ni več prostih mest!</li>
 		{% elif not povabilo.skupina %}
 			<li class="list-group-item bg-light">
-				<button type="button" class="btn btn-block btn-primary">Prijava</button>
+				<button type="submit" name="skupina" value="{{ skupina.pk }}" class="btn btn-block btn-primary">Prijava</button>
 			</li>
 		{% endif %}
 	{% endif %}
 		</ul>
 	</div>
 {% endfor %}
-</div>
+</form>
 {% endblock main %}

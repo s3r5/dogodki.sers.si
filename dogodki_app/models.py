@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.core.exceptions import ValidationError
 from django.urls.base import reverse
 from django.contrib.auth.models import AbstractUser
 
@@ -55,6 +56,12 @@ class Povabilo(models.Model):
 	skupina = models.ForeignKey(Skupina, blank=True, null=True, related_name="prijavljeni", on_delete=models.CASCADE)
 
 	dogodek = models.ForeignKey(Dogodek, on_delete=models.CASCADE, related_name="povabljeni")
+
+	def clean(self):
+		if self.skupina:
+			prijavljeni = self.skupina.prijavljeni.count()
+			if prijavljeni >= self.skupina.število_mest:
+				raise ValidationError("Vsa mesta so zasedena")
 
 	class Meta:
 		verbose_name = "Povabilo"

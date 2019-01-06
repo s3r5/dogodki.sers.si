@@ -1,7 +1,7 @@
-from django.views.generic.base import TemplateView
+from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
-from django.forms import inlineformset_factory, modelform_factory
+from django.forms import inlineformset_factory, modelform_factory, ModelForm
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 
@@ -45,6 +45,7 @@ class DogodekView(DetailView):
 		found = False
 		for skupina in self.object.skupine.all():
 			obj_skupina = {
+				"pk": skupina.pk,
 				"naslov": skupina.naslov,
 				"število_mest": skupina.število_mest,
 				"število_prijavljenih": skupina.prijavljeni.count(),
@@ -84,3 +85,22 @@ class UstvariDogodekView(EditDogodekMixin, CreateView):
 
 class UrediDogodekView(EditDogodekMixin, UpdateView):
 	permission_required = "dogodek.can_create"
+
+class DogodekPrijavaForm(ModelForm):
+
+	class Meta:
+		model = models.Povabilo
+		exclude = ("uporabnik", "dogodek")
+
+class DogodekPrijavaView(UpdateView):
+	form_class = DogodekPrijavaForm
+	template_name = "dogodki/test.html"
+
+	def get_object(self):
+		return models.Povabilo.objects.get(dogodek__pk=self.kwargs["pk"], uporabnik=self.request.user.pk)
+	
+	def get_success_url(self):
+		return self.object.dogodek.get_absolute_url()
+	
+	def form_invalid(self, form):
+		raise PermissionDenied()  # TODO: Error message
