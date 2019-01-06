@@ -14,6 +14,8 @@ import environ
 INSTALLED_APPS = [
 	"dogodki_app",
 
+	"social_django",
+
 	"django.contrib.sites",
 	'django.contrib.admin',
 	'django.contrib.auth',
@@ -44,6 +46,9 @@ TEMPLATES = [
 				'django.template.context_processors.request',
 				'django.contrib.auth.context_processors.auth',
 				'django.contrib.messages.context_processors.messages',
+				# python-social-auth (for Microsoft)
+				"social_django.context_processors.backends",
+				"social_django.context_processors.login_redirect"
 			],
 		},
 	},
@@ -72,7 +77,10 @@ env = environ.Env(
 	DEBUG_IPS=(list, []),
 	ALLOWED_HOSTS=(list, []),
 	ADMINS=(list, ["admin"]),
-	SITE_ID=int
+	SITE_ID=(int, 0),
+	# python-social-auth
+	MICROSOFT_AUTH_CLIENT_ID=(str, ""),
+	MICROSOFT_AUTH_CLIENT_SECRET=(str, ""),
 )
 if os.path.isfile(os.environ["ENV_FILE"]):
 	env.read_env(os.environ["ENV_FILE"])
@@ -137,6 +145,28 @@ AUTH_USER_MODEL = 'dogodki_app.User'
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "dashboard"
 LOGOUT_REDIRECT_URL = "dashboard"
+
+SOCIAL_AUTH_PIPELINE = (
+	'social_core.pipeline.social_auth.social_details',
+	'social_core.pipeline.social_auth.social_uid',
+	'social_core.pipeline.social_auth.social_user',
+	'social_core.pipeline.user.get_username',
+	'social_core.pipeline.user.create_user',
+	'social_core.pipeline.social_auth.associate_user',
+	'social_core.pipeline.social_auth.load_extra_data',
+	'social_core.pipeline.user.user_details',
+	'social_core.pipeline.social_auth.associate_by_email',
+)
+
+SOCIAL_AUTH_MICROSOFT_GRAPH_KEY = env("MICROSOFT_AUTH_CLIENT_ID")
+SOCIAL_AUTH_MICROSOFT_GRAPH_SECRET = env("MICROSOFT_AUTH_CLIENT_SECRET")
+SOCIAL_AUTH_MICROSOFT_GRAPH_RESOURCE = 'https://graph.microsoft.com/'
+SOCIAL_AUTH_MICROSOFT_GRAPH_SCOPE = ["User.Read"]
+
+AUTHENTICATION_BACKENDS = [
+	"social_core.backends.microsoft.MicrosoftOAuth2",  # python-social-auth (for Microsoft)
+	'django.contrib.auth.backends.ModelBackend'
+]
 
 AUTH_PASSWORD_VALIDATORS = [
 	{

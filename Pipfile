@@ -6,6 +6,7 @@ verify_ssl = true
 [packages]
 django = "*"
 django-environ = "*"
+social-auth-app-django = "*"
 
 [dev-packages]
 pylint = "*"
