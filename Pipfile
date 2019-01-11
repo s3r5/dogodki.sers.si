@@ -6,6 +6,7 @@ verify_ssl = true
 [packages]
 django = "*"
 django-environ = "*"
+django-import-export = "*"
 
 [dev-packages]
 pylint = "*"
