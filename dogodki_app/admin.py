@@ -5,15 +5,16 @@ from .models import *
 # Register your models here.
 
 admin.site.register(User, UserAdmin)
+UserAdmin.fieldsets += ("Šola", {'fields': ('oddelek',)}),
 
 @admin.register(Dogodek)
-class DogodekProfileAdmin(admin.ModelAdmin):
+class DogodekAdmin(admin.ModelAdmin):
 	pass
 
 @admin.register(Skupina)
-class SkupinaProfileAdmin(admin.ModelAdmin):
+class SkupinaAdmin(admin.ModelAdmin):
 	pass
 
 @admin.register(Povabilo)
-class PovabiloProfileAdmin(admin.ModelAdmin):
+class PovabiloAdmin(admin.ModelAdmin):
 	pass
