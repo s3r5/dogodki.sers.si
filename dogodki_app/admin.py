@@ -7,14 +7,16 @@ from .models import *
 admin.site.register(User, UserAdmin)
 UserAdmin.fieldsets += ("Šola", {'fields': ('oddelek',)}),
 
+class SkupinaInline(admin.StackedInline):
+	model = Skupina
+	extra = 0
+
 @admin.register(Dogodek)
 class DogodekAdmin(admin.ModelAdmin):
-	pass
-
-@admin.register(Skupina)
-class SkupinaAdmin(admin.ModelAdmin):
-	pass
-
+	inlines = [
+		SkupinaInline
+	]
+	
 @admin.register(Povabilo)
 class PovabiloAdmin(admin.ModelAdmin):
 	pass
