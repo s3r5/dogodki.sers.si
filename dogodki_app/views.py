@@ -46,6 +46,7 @@ class DogodekView(DetailView):
 		for skupina in self.object.skupine.all():
 			obj_skupina = {
 				"pk": skupina.pk,
+				"opis": skupina.opis,
 				"naslov": skupina.naslov,
 				"število_mest": skupina.število_mest,
 				"število_prijavljenih": skupina.prijavljeni.count(),
