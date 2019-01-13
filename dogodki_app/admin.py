@@ -42,5 +42,6 @@ class UserResource(ModelResource):
 class CustomUserAdmin(UserAdmin, ImportExportModelAdmin):
 	resource_class = UserResource
 	formats = [base_formats.XLS]
+	import_template_name = "dogodki/import.html"
 
 CustomUserAdmin.fieldsets += ('Custom fields set', {'fields': ('oddelek',)}),
