@@ -14,6 +14,8 @@ import environ
 INSTALLED_APPS = [
 	"dogodki_app",
 
+	"import_export",
+
 	'django.contrib.admin',
 	'django.contrib.auth',
 	'django.contrib.contenttypes',
