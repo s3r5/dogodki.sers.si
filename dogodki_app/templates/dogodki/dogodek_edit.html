@@ -49,9 +49,14 @@
 
 		<div class="card">
 			<div class="card-header"><i class="far fa-clipboard"></i> Povabljeni</div>
-			<div class="card-body">
-				
-			</div>
+			<ul class="list-group list-group-flush">
+{% for povabilo in dogodek.povabljeni.all %}
+				<li class="list-group-item d-flex justify-content-between">
+					Miha Frangež, 4. ag
+					<button type="button" class="btn btn-sm btn-danger"><i class="fas fa-times"></i></button>
+				</li>
+			</ul>
+{% endfor %}
 		</div>
 	</div>
 

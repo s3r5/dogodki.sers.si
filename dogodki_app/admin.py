@@ -13,3 +13,7 @@ class DogodekProfileAdmin(admin.ModelAdmin):
 @admin.register(Skupina)
 class SkupinaProfileAdmin(admin.ModelAdmin):
 	pass
+
+@admin.register(Povabilo)
+class PovabiloProfileAdmin(admin.ModelAdmin):
+	pass
