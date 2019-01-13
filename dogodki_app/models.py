@@ -16,7 +16,7 @@ class Dogodek(models.Model):
 	naslov = models.CharField(max_length=50)
 	datum = models.DateField()
 	rok_prijave = models.DateTimeField()
-	opis = models.TextField(null=True, blank=False)
+	opis = models.TextField(null=True, blank=True)
 
 	@property
 	def število_mest(self):
@@ -40,7 +40,7 @@ class Dogodek(models.Model):
 
 class Skupina(models.Model):
 	naslov = models.CharField(max_length=50)
-	opis = models.TextField(null=True, blank=False)
+	opis = models.TextField(null=True, blank=True)
 	število_mest = models.PositiveIntegerField(validators=[MinValueValidator(1)])
 
 	dogodek = models.ForeignKey(Dogodek, on_delete=models.CASCADE, related_name="skupine")
