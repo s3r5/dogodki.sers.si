@@ -11,6 +11,7 @@ from import_export.fields import Field
 from import_export.formats import base_formats
 
 from .models import *
+from .util import pošlji_obvestila
 from .admin_util import *
 
 
@@ -25,17 +26,28 @@ class AdminPovabiOddelkeView(FormView):
 	admin_site = None  # Filled in by as_view()
 
 	def get_context_data(self, **kwargs):
+		self.dogodek = Dogodek.objects.get(pk=self.kwargs["pk"])
 		context = super().get_context_data(**kwargs)
 		context.update(self.admin_site.each_context(self.request))
 		context.update({
 			"opts": Dogodek._meta,
-			"dogodek": Dogodek.objects.get(pk=self.kwargs["pk"])
+			"dogodek": self.dogodek
 		})
 		return context
 	
 	def form_valid(self, form):
-		for user in User.objects.filter(oddelek__in=form.cleaned_data["oddelki"]):
-			Povabilo.objects.get_or_create(dogodek_id=self.kwargs["pk"], uporabnik=user)
+		self.dogodek = Dogodek.objects.get(pk=self.kwargs["pk"])
+		users = User.objects.filter(oddelek__in=form.cleaned_data["oddelki"])
+
+		emails = []
+
+		for user in users:
+			povabilo, created = Povabilo.objects.get_or_create(dogodek=self.dogodek, uporabnik=user)
+			if not povabilo.email_poslan:
+				emails.append(user.email)		
+
+		pošlji_obvestila(self.dogodek, emails)
+
 		return redirect(reverse("admin:dogodki_app_dogodek_change", args=[self.kwargs["pk"]]))
 
 # Register your models here.

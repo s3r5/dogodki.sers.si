@@ -55,8 +55,8 @@ class Skupina(models.Model):
 class Povabilo(models.Model):
 	uporabnik = models.ForeignKey(User, on_delete=models.CASCADE)
 	skupina = models.ForeignKey(Skupina, blank=True, null=True, related_name="prijavljeni", on_delete=models.CASCADE)
-
 	dogodek = models.ForeignKey(Dogodek, on_delete=models.CASCADE, related_name="povabljeni")
+	email_poslan = models.BooleanField(default=False)
 
 	def clean(self):
 		if self.skupina:
