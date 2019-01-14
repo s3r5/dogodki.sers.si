@@ -1,7 +1,22 @@
-from datetime import date
-
-from django.shortcuts import redirect
+from django.core.mail import EmailMessage
+from django.shortcuts import redirect, reverse
 from django.views.generic.edit import UpdateView
+from django.template.loader import render_to_string
+
+from .models import Povabilo
+
+def pošlji_obvestila(dogodek, emails):
+	email = EmailMessage(
+		subject="Povabilo na dogodek: %s" % dogodek,
+		body=render_to_string("dogodki/mail/vabilo.txt", {"dogodek": dogodek}),
+		from_email=None,  # Use default
+		to=[],
+		bcc=emails
+	)
+	
+	email.send()
+
+	Povabilo.objects.filter(dogodek=dogodek, uporabnik__email__in=emails).update(email_poslan=True)
 
 class FormsetMixin:
 	object = None

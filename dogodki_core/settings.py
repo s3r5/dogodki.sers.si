@@ -14,6 +14,8 @@ import environ
 INSTALLED_APPS = [
 	"dogodki_app",
 
+	"import_export",
+
 	"social_django",
 
 	"django.contrib.sites",
@@ -26,6 +28,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+	'django.middleware.locale.LocaleMiddleware',
 	'django.middleware.security.SecurityMiddleware',
 	'django.contrib.sessions.middleware.SessionMiddleware',
 	'django.middleware.common.CommonMiddleware',
