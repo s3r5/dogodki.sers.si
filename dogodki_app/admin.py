@@ -1,5 +1,9 @@
+from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.shortcuts import redirect, reverse
+from django.urls import path
+from django.views.generic import FormView
 
 from import_export.admin import ImportExportModelAdmin
 from import_export.resources import ModelResource
@@ -8,6 +12,31 @@ from import_export.formats import base_formats
 
 from .models import *
 from .admin_util import *
+
+
+# TODO: Popravi, ko bo obstajala prava relacija
+oddelki = lambda: ((oddelek, oddelek) for oddelek in User.objects.filter(oddelek__isnull=False).values_list("oddelek", flat=True).distinct())
+class PovabiOddelkeForm(forms.Form):
+	oddelki = forms.MultipleChoiceField(choices=oddelki, widget=forms.CheckboxSelectMultiple)
+
+class AdminPovabiOddelkeView(FormView):
+	template_name = "dogodki/admin/dogodek_povabi_oddelke.html"
+	form_class = PovabiOddelkeForm
+	admin_site = None  # Filled in by as_view()
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context.update(self.admin_site.each_context(self.request))
+		context.update({
+			"opts": Dogodek._meta,
+			"dogodek": Dogodek.objects.get(pk=self.kwargs["pk"])
+		})
+		return context
+	
+	def form_valid(self, form):
+		for user in User.objects.filter(oddelek__in=form.cleaned_data["oddelki"]):
+			Povabilo.objects.get_or_create(dogodek_id=self.kwargs["pk"], uporabnik=user)
+		return redirect(reverse("admin:dogodki_app_dogodek_change", args=[self.kwargs["pk"]]))
 
 # Register your models here.
 
@@ -22,6 +51,13 @@ class DogodekAdmin(admin.ModelAdmin):
 	inlines = [
 		SkupinaInline
 	]
+
+	def get_urls(self):
+		urls = super().get_urls()
+		my_urls = [
+			path('<int:pk>/povabi_oddelek/', self.admin_site.admin_view(AdminPovabiOddelkeView.as_view(admin_site=self.admin_site)), name="dogodki_app_povabi_oddelek"),
+		]
+		return my_urls + urls
 
 @admin.register(Povabilo)
 class PovabiloAdmin(admin.ModelAdmin):

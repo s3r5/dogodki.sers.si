@@ -5,5 +5,8 @@
 <li>
 	<a href="{% url "admin:dogodki_app_povabilo_changelist" %}?dogodek__id__exact={{ object_id }}"><b>Seznam</b></a>
 </li>
+<li>
+	<a href="{% url "admin:dogodki_app_povabi_oddelek" pk=object_id %}"><b>Povabi oddelke</b></a>
+</li>
 {{ block.super }}
 {% endblock %}

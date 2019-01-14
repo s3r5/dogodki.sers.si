@@ -1,0 +1,24 @@
+{% extends "admin/import_export/base.html" %}
+{% load i18n admin_urls static %}
+
+{% block breadcrumbs_last %}
+<a href="../change/">{{ dogodek }}</a> › Povabi oddelke
+{% endblock %}
+
+{% block content %}
+<h1>Povabi oddelke</h1>
+<p>Vsi uporabniki iz izbranih oddelkov bodo povabljeni na dogodek. Če so po e-pošti povabilo že prejeli, ga ne bodo dobili še enkrat!</p>
+
+<form method="POST" action="">
+	{% csrf_token %}
+
+	<div class="form-row">
+		<label for="id_oddelki">Oddelki:</label>
+		{{ form.oddelki }}
+	</div>
+
+	<div class="submit-row">
+		<input type="submit" class="default" value="{% trans "Submit" %}">
+	</div>
+</form>
+{% endblock %}
