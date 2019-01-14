@@ -60,7 +60,7 @@ class Povabilo(models.Model):
 
 	def clean(self):
 		if self.skupina:
-			prijavljeni = self.skupina.prijavljeni.count()
+			prijavljeni = self.skupina.prijavljeni.filter(uporabnik__oddelek=self.uporabnik.oddelek).count()
 			if prijavljeni >= self.skupina.število_mest:
 				raise ValidationError("Vsa mesta so zasedena")
 
