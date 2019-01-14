@@ -70,28 +70,3 @@ class FormsetMixin:
 
 	def form_invalid(self, form, formset):
 		return self.render_to_response(self.get_context_data(form=form, formset=formset))
-
-def trenutni_oddelek(oddelek: str) -> str:
-	"""Zapis oddelka z letom vpisa pretvori v trenutni oddelek
-	npr. "1.ag_2015" -> "4. ag"
-	Če pretvorba ne uspe, vrne null
-	"""
-	now = date.today()
-	letos = now.year
-
-	if now.month <= 8:
-		letos -= 1
-
-	try:
-		prvi, leto = oddelek.split("_")
-		_, program = prvi.split(".")
-		
-		if len(leto) == 2:
-			leto = "20" + leto
-		leto = int(leto)
-		
-		letnik = letos - leto + 1
-		
-		return "%i. %s" % (letnik, program)
-	except:
-		return None
