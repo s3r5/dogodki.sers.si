@@ -32,7 +32,6 @@ class PovabiloAdmin(admin.ModelAdmin):
 	list_filter = ("uporabnik__oddelek", SkupinaListFilter, "dogodek")
 
 	def povabilo_oddelek(self, povabilo):
-		print(povabilo.uporabnik.oddelek, povabilo, povabilo.uporabnik)
 		return povabilo.uporabnik.oddelek
 
 	povabilo_oddelek.short_description = "oddelek"

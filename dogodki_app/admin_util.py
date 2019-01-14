@@ -10,7 +10,6 @@ class SkupinaListFilter(admin.SimpleListFilter):
 		return True
 
 	def lookups(self, request, model_admin: admin.ModelAdmin):
-		print(self.__dict__)
 		skupine = Skupina.objects.all()
 		if "dogodek__id__exact" in request.GET:
 			skupine = skupine.filter(dogodek__id__exact=int(request.GET["dogodek__id__exact"]))
