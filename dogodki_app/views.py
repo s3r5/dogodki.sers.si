@@ -35,7 +35,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 			"pretekla_povabila": povabila.filter(dogodek__datum__lt=danes)
 		}
 
-class DogodekView(DetailView):
+class DogodekView(LoginRequiredMixin, DetailView):
 	template_name = "dogodki/dogodek.html"
 	model = models.Dogodek
 
@@ -102,7 +102,7 @@ class DogodekPrijavaForm(ModelForm):
 		model = models.Povabilo
 		exclude = ("uporabnik", "dogodek")
 
-class DogodekPrijavaView(UpdateView):
+class DogodekPrijavaView(LoginRequiredMixin, UpdateView):
 	form_class = DogodekPrijavaForm
 
 	def get_object(self):
