@@ -1,10 +1,11 @@
 from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
-from django.forms import inlineformset_factory, modelform_factory, ModelForm
+from django.forms import inlineformset_factory, modelform_factory, ModelForm, ValidationError
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.contrib import messages
 from django.shortcuts import redirect
+from django.utils import timezone
 
 from datetime import date
 
@@ -75,6 +76,9 @@ class DogodekView(LoginRequiredMixin, DetailView):
 			obj_skupine.append(obj_skupina)
 
 		context["skupine"] = obj_skupine
+
+		if context["povabilo"].dogodek.rok_prijave < timezone.now():
+			context["poteklo"] = True
 		return context
 
 class EditDogodekMixin(FormsetMixin, PermissionRequiredMixin):
@@ -91,6 +95,12 @@ class UrediDogodekView(EditDogodekMixin, UpdateView):
 	permission_required = "dogodek.can_create"
 
 class DogodekPrijavaForm(ModelForm):
+
+	def clean(self):
+		if self.instance.dogodek.rok_prijave < timezone.now():
+			raise ValidationError("Rok za prijavo je potekel!")
+
+		return super().clean()
 
 	class Meta:
 		model = models.Povabilo
