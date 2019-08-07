@@ -98,11 +98,22 @@ class UserResource(ModelResource):
 	last_name = Field(attribute="last_name", column_name="Priimek")
 	email = Field(attribute="email", column_name="Email")
 	oddelek = Field(attribute="oddelek", column_name="Oddelek")
+	
+	def before_import(self, dataset, using_transactions, dry_run, **kwargs):
+		email_col = dataset.headers.index("Email")
+
+		# Iz uvožene datoteke odstrani vse vnose brez e-poštnega naslova
+		to_delete = []
+		for i, row in enumerate(dataset):
+			if not "@" in row[email_col]:
+				to_delete.append(i)
+		for i in to_delete:
+			del dataset[i]
 
 	def before_import_row(self, row, **kwargs):
 		row["username"] = row["Email"].split("@")[0]
 		return row
-	
+
 	class Meta:
 		model = User
 		fields = ("first_name", "last_name", "email", "oddelek", "username")
@@ -113,5 +124,7 @@ class CustomUserAdmin(UserAdmin, ImportExportModelAdmin):
 	resource_class = UserResource
 	formats = [base_formats.XLS]
 	import_template_name = "dogodki/import.html"
+
+	
 
 CustomUserAdmin.fieldsets += ('Custom fields set', {'fields': ('oddelek',)}),
