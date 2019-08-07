@@ -161,13 +161,14 @@ SOCIAL_AUTH_PIPELINE = (
 	'social_core.pipeline.user.user_details',
 )
 
-SOCIAL_AUTH_MICROSOFT_GRAPH_KEY = env("MICROSOFT_AUTH_CLIENT_ID")
-SOCIAL_AUTH_MICROSOFT_GRAPH_SECRET = env("MICROSOFT_AUTH_CLIENT_SECRET")
-SOCIAL_AUTH_MICROSOFT_GRAPH_RESOURCE = 'https://graph.microsoft.com/'
-SOCIAL_AUTH_MICROSOFT_GRAPH_SCOPE = ["User.Read"]
+SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_KEY = env("MICROSOFT_AUTH_CLIENT_ID")
+SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_SECRET = env("MICROSOFT_AUTH_CLIENT_SECRET")
+SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_TENANT_ID = env("MICROSOFT_AUTH_TENANT_ID")
+SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_RESOURCE = 'https://graph.microsoft.com/'
+SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_SCOPE = ["User.Read"]
 
 AUTHENTICATION_BACKENDS = [
-	"social_core.backends.microsoft.MicrosoftOAuth2",  # python-social-auth (for Microsoft)
+	"social_core.backends.azuread_tenant.AzureADTenantOAuth2",  # python-social-auth (for Microsoft)
 	'django.contrib.auth.backends.ModelBackend'
 ]
 
