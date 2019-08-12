@@ -16,7 +16,7 @@ services:
      - app_media:/usr/src/media
     env_file: .env
     environment:
-     - DATABASE_URL=postgres://db/dogodki
+     - DATABASE_URL=postgres://postgres:example@db/postgres
   
   http:
     image: nginx:1.15-alpine
