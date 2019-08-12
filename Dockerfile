@@ -1,7 +1,7 @@
 FROM python:3.6-alpine
 
 WORKDIR /usr/src/app
-EXPOSE 80
+EXPOSE ${PORT:-80}
 
 # Install Pipenv
 RUN pip install pipenv
@@ -18,7 +18,8 @@ COPY Pipfile* ./
 
 # Sync (install) packages
 RUN PIP_NO_CACHE_DIR=true pipenv install --system --deploy --ignore-pipfile && \
+	pip install --no-cache-dir gunicorn
 
 COPY . .
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:80"]
+CMD exec gunicorn dogodki_core.wsgi:application --bind 0.0.0.0:${PORT:-80} --capture-output
