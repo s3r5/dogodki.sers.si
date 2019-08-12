@@ -5,6 +5,13 @@ from django.template.loader import render_to_string
 
 from .models import Povabilo
 
+def get_username(strategy, details, backend, user=None, *args, **kwargs):
+	if not user:
+		username = details["email"].split("@")[0]
+	else:
+		username = strategy.storage.user.get_username(user)
+	return {"username": username}
+
 def pošlji_obvestila(dogodek, emails):
 	email = EmailMessage(
 		subject="Povabilo na dogodek: %s" % dogodek,
