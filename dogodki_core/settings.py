@@ -105,6 +105,9 @@ SERVER_MAIL = EMAIL_CONFIG["EMAIL_HOST_USER"]
 SECRET_KEY = env("SECRET_KEY", default="NOT_NEEDED_FOR_DOCKER_BUILDS")
 ALLOWED_HOSTS = env("ALLOWED_HOSTS", default=[])
 
+if env("BEHIND_PROXY", default=False):
+	SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 #############
 #           #
 #   DEBUG   #
