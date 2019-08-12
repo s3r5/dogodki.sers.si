@@ -12,7 +12,7 @@ variables:
 build:
     stage: build
     script:
-        - branch=$(git rev-parse --abbrev-ref HEAD)
+        - branch=$CI_COMMIT_REF_NAME
         - docker build -t $GITLAB_IMAGE:$branch .
 #        - [ $branch = "master" ] && docker tag $GITLAB_IMAGE:$branch $GITLAB_IMAGE:latest
 
