@@ -12,7 +12,10 @@ variables:
 build:
     stage: build
     script:
-        - docker build -t $GITLAB_IMAGE .
+        - branch=$CI_COMMIT_REF_NAME
+        - docker build -t $GITLAB_IMAGE:$branch .
+#        - [ $branch = "master" ] && docker tag $GITLAB_IMAGE:$branch $GITLAB_IMAGE:latest
 
         - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
-        - docker push $GITLAB_IMAGE
+        - docker push $GITLAB_IMAGE:$branch
+#        - [ $branch = "master" ] && docker push $GITLAB_IMAGE:latest

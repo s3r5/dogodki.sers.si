@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:11-alpine
+    volumes:
+     - db_data:/var/lib/postgresql/data
+    
+  app:
+    image: registry.gitlab.com/franga2000/ip-2019:latest
+    build: .
+    depends_on: 
+     - db
+    volumes:
+     - app_static:/usr/src/static
+     - app_media:/usr/src/media
+    env_file: .env
+    environment:
+     - DATABASE_URL=postgres://db/dogodki
+  
+  http:
+    image: nginx:1.15-alpine
+    depends_on:
+     - app
+    ports:
+     - 80:80
+    volumes:
+     - ${PWD}/nginx.conf:/etc/nginx/conf.d/dogodki.conf
+     - app_static:/var/www/static
+     - app_media:/var/www/media
+
+volumes:
+  app_media:
+  app_static:
+  db_data:
