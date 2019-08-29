@@ -49,7 +49,7 @@ TEMPLATES = [
 				'django.template.context_processors.request',
 				'django.contrib.auth.context_processors.auth',
 				'django.contrib.messages.context_processors.messages',
-				# python-social-auth (for Microsoft)
+				# python-social-auth
 				"social_django.context_processors.backends",
 				"social_django.context_processors.login_redirect"
 			],
@@ -82,8 +82,7 @@ env = environ.Env(
 	ADMINS=(list, ["admin"]),
 	SITE_ID=(int, 0),
 	# python-social-auth
-	MICROSOFT_AUTH_CLIENT_ID=(str, ""),
-	MICROSOFT_AUTH_CLIENT_SECRET=(str, ""),
+	# TODO: Arnes env vars
 )
 if os.path.isfile(os.environ["ENV_FILE"]):
 	env.read_env(os.environ["ENV_FILE"])
@@ -164,14 +163,10 @@ SOCIAL_AUTH_PIPELINE = (
 	'social_core.pipeline.user.user_details',
 )
 
-SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_KEY = env("MICROSOFT_AUTH_CLIENT_ID")
-SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_SECRET = env("MICROSOFT_AUTH_CLIENT_SECRET")
-SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_TENANT_ID = env("MICROSOFT_AUTH_TENANT_ID")
-SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_RESOURCE = 'https://graph.microsoft.com/'
-SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_SCOPE = ["User.Read"]
+# TODO: Arnes config vars
 
 AUTHENTICATION_BACKENDS = [
-	"social_core.backends.azuread_tenant.AzureADTenantOAuth2",  # python-social-auth (for Microsoft)
+	# TODO: Arnes backend
 	'django.contrib.auth.backends.ModelBackend'
 ]
 
