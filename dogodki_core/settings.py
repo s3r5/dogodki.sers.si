@@ -154,6 +154,7 @@ LOGOUT_REDIRECT_URL = "dashboard"
 SOCIAL_AUTH_PIPELINE = (
 	'social_core.pipeline.social_auth.social_details',
 	'social_core.pipeline.social_auth.social_uid',
+	'social_core.pipeline.social_auth.auth_allowed',
 	'social_core.pipeline.social_auth.social_user',
 	'dogodki_app.util.get_username',
 	'social_core.pipeline.social_auth.associate_by_email',
@@ -169,6 +170,9 @@ AUTHENTICATION_BACKENDS = [
 	# TODO: Arnes backend
 	'django.contrib.auth.backends.ModelBackend'
 ]
+
+# Omejitev na člane organizacije
+WHITELISTED_DOMAINS = ["sers.si"]  # TODO: configurable
 
 AUTH_PASSWORD_VALIDATORS = [
 	{
