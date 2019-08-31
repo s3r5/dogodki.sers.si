@@ -44,12 +44,8 @@
 		<div class="card mb-3">
 			<div class="card-header"><i class="far fa-address-card"></i> AAI Prijava</div>
 			<div class="card-body text-center">
-				<div class="alert alert-danger">
-					<strong>AAI Prijava še ni na voljo.</strong><br>
-					Med tem se lahko prijavite z lokalnim računom.
-				</div>
-				<a href="#TODO:AAI">
-					<img src="{% static 'aai_prijava.png' %}">
+				<a href="{% url "social:begin" "saml" %}?idp=arnesaai">
+					<img src="{% static 'aai_prijava.png' %}" alt="ArnesAAI logo" width="300px">
 				</a>
 			</div>
 		</div>

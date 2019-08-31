@@ -4,8 +4,11 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.forms import inlineformset_factory, modelform_factory, ModelForm, ValidationError
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.contrib import messages
-from django.shortcuts import redirect
+from django.shortcuts import redirect, reverse
+from django.http.response import HttpResponse
 from django.utils import timezone
+
+from social_django.utils import load_strategy, load_backend
 
 from datetime import date
 
@@ -125,3 +128,14 @@ class DogodekPrijavaView(LoginRequiredMixin, UpdateView):
 		for error in form.errors.values():
 				messages.add_message(self.request, messages.ERROR, error.as_text())
 		return redirect(self.object.dogodek.get_absolute_url())
+
+def saml_metadata_view(request):
+	complete_url = reverse('social:complete', args=("saml", ))
+	saml_backend = load_backend(
+		load_strategy(request),
+		"saml",
+		redirect_uri=complete_url,
+	)
+	metadata, errors = saml_backend.generate_metadata_xml()
+	if not errors:
+		return HttpResponse(content=metadata, content_type='text/xml')

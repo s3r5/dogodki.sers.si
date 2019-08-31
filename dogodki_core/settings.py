@@ -5,6 +5,8 @@ import os
 
 import environ
 
+from dogodki_core.util import parse_saml_contact, get_arnes_cert
+
 ##################
 #                #
 #   APP CONFIG   #
@@ -83,6 +85,10 @@ env = environ.Env(
 	SITE_ID=(int, 0),
 	# python-social-auth
 	# TODO: Arnes env vars
+	TECHNICAL_CONTACT=(str, "Miha Frangež<miha.frangez@sers.si>"),
+	SUPPORT_CONTACT=(str, "Miha Frangež<miha.frangez@sers.si>"),
+	SAML_PUBLIC_CERT=(str, None),
+	SAML_PRIVATE_KEY=(str, None)
 )
 if os.path.isfile(os.environ["ENV_FILE"]):
 	env.read_env(os.environ["ENV_FILE"])
@@ -166,8 +172,38 @@ SOCIAL_AUTH_PIPELINE = (
 
 # TODO: Arnes config vars
 
+# TODO: turn this into env vars
+SOCIAL_AUTH_SAML_SP_ENTITY_ID = "https://dogodki.sers.si"  # TODO: configurable
+SOCIAL_AUTH_SAML_SP_PUBLIC_CERT = env("SAML_PUBLIC_CERT")
+SOCIAL_AUTH_SAML_SP_PRIVATE_KEY = env("SAML_PRIVATE_KEY")
+
+SOCIAL_AUTH_SAML_ORG_INFO = {  # TODO: configurable
+	"en-US": {
+		"name": "sers-dogodki",
+		"displayname": "SERŠ prijava na dogodke",
+		"url": "https://dogodki.sers.si",
+	},
+	"sl-SI": {
+		"name": "sers-dogodki",
+		"displayname": "SERŠ prijava na dogodke",
+		"url": "https://dogodki.sers.si"
+	}
+}
+
+SOCIAL_AUTH_SAML_TECHNICAL_CONTACT = parse_saml_contact(env("TECHNICAL_CONTACT"))
+
+SOCIAL_AUTH_SAML_SUPPORT_CONTACT = parse_saml_contact(env("SUPPORT_CONTACT"))
+
+SOCIAL_AUTH_SAML_ENABLED_IDPS = {
+	"arnesaai": {
+		"entity_id": "https://idp.aai.arnes.si/idp/20090116",
+		"url": "https://idp.aai.arnes.si/simplesaml/saml2/idp/SSOService.php",
+		"x509cert": get_arnes_cert(),
+	}
+}
+
 AUTHENTICATION_BACKENDS = [
-	# TODO: Arnes backend
+	"social_core.backends.saml.SAMLAuth",  # python-social-auth
 	'django.contrib.auth.backends.ModelBackend'
 ]
 

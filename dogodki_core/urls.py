@@ -9,6 +9,7 @@ from django.contrib.auth import views as auth_views
 
 from dogodki_core import settings
 import dogodki_app.views
+from dogodki_app.views import saml_metadata_view
 
 urlpatterns = [
 	path("", dogodki_app.views.DashboardView.as_view(), name="dashboard"),
@@ -18,8 +19,9 @@ urlpatterns = [
 	path("profil", dogodki_app.views.ProfilView.as_view(), name='profil'),
 	path("dogodek/<int:pk>/prijava", dogodki_app.views.DogodekPrijavaView.as_view(), name="dogodek_prijava"),
 	path("prijava", auth_views.LoginView.as_view(), name='login'),
-    path("odjava", auth_views.LogoutView.as_view(), name='logout'),
+	path("odjava", auth_views.LogoutView.as_view(), name='logout'),
 	path('admin/', admin.site.urls),
+	path("saml_metadata", saml_metadata_view),
 	path('', include('social_django.urls', namespace='social'))
 ]
 

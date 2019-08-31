@@ -8,6 +8,8 @@ django = "*"
 django-environ = "*"
 social-auth-app-django = "*"
 django-import-export = "*"
+onelogin = "*"
+python3-saml = "*"
 
 [dev-packages]
 pylint = "*"
