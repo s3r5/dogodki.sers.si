@@ -4,13 +4,13 @@ WORKDIR /usr/src/app
 EXPOSE ${PORT:-80}
 
 # Install Pipenv
-RUN pip install pipenv
+RUN pip install --no-cache-dir pipenv
 
-# PostgreSQL
+# PostgreSQL & lxml+xmlsec (for SAML)
 RUN apk update && \
-	apk add --no-cache libpq && \
-	apk add --no-cache --virtual .build-deps postgresql-dev gcc musl-dev && \
-	pip install --no-cache-dir psycopg2 && \
+	apk add --no-cache libpq libxslt xmlsec && \
+	apk add --no-cache --virtual .build-deps postgresql-dev gcc libxslt-dev xmlsec-dev musl-dev && \
+	pip install --no-cache-dir psycopg2 lxml xmlsec && \
 	apk del .build-deps
 
 # Copy and install Pipfile before everything else for better caching
