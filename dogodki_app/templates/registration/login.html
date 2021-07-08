@@ -3,6 +3,7 @@
 {% load static %}
 {% block main %}
 <div class="row">
+{% comment %}
 	<div class="col-md-6">
 		<div class="card mb-3">
 			<div class="card-header"><i class="fas fa-key"></i> Lokalna prijava</div>
@@ -41,6 +42,8 @@
 		</div>
 	</div>
 	<div class="col-md-6">
+{% endcomment %}
+	<div class="col"> <!-- Look at the 2 lines above before un commenting stuff -->
 		<div class="card mb-3">
 			<div class="card-header"><i class="far fa-address-card"></i> Prijava z Microsoft računom</div>
 			<div class="card-body text-center">
@@ -49,6 +52,7 @@
 				</a>
 			</div>
 		</div>
+{% comment %}
 		<div class="card">
 			<div class="card-header"><i class="far fa-address-card"></i> AAI Prijava</div>
 			<div class="card-body text-center">
@@ -61,6 +65,7 @@
 				</a>
 			</div>
 		</div>
+{% endcomment %}
 	</div>
 	
 </div>
