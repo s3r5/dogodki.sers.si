@@ -16,6 +16,9 @@ INSTALLED_APPS = [
 
 	"import_export",
 
+	"social_django",
+
+	"django.contrib.sites",
 	'django.contrib.admin',
 	'django.contrib.auth',
 	'django.contrib.contenttypes',
@@ -46,6 +49,9 @@ TEMPLATES = [
 				'django.template.context_processors.request',
 				'django.contrib.auth.context_processors.auth',
 				'django.contrib.messages.context_processors.messages',
+				# python-social-auth (for Microsoft)
+				"social_django.context_processors.backends",
+				"social_django.context_processors.login_redirect"
 			],
 		},
 	},
@@ -73,10 +79,17 @@ env = environ.Env(
 	DEBUG=(bool, False),
 	DEBUG_IPS=(list, []),
 	ALLOWED_HOSTS=(list, []),
-	ADMINS=(list, ["admin"])
+	ADMINS=(list, ["admin"]),
+	SITE_ID=(int, 0),
+	# python-social-auth
+	MICROSOFT_AUTH_CLIENT_ID=(str, ""),
+	MICROSOFT_AUTH_CLIENT_SECRET=(str, ""),
 )
 if os.path.isfile(os.environ["ENV_FILE"]):
 	env.read_env(os.environ["ENV_FILE"])
+
+# Sites
+SITE_ID = env("SITE_ID")
 
 # File storage
 STATIC_ROOT = root(env("STATIC_DIR", default="../static"))
@@ -138,6 +151,29 @@ AUTH_USER_MODEL = 'dogodki_app.User'
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "dashboard"
 LOGOUT_REDIRECT_URL = "dashboard"
+
+SOCIAL_AUTH_PIPELINE = (
+	'social_core.pipeline.social_auth.social_details',
+	'social_core.pipeline.social_auth.social_uid',
+	'social_core.pipeline.social_auth.social_user',
+	'dogodki_app.util.get_username',
+	'social_core.pipeline.social_auth.associate_by_email',
+	'social_core.pipeline.user.create_user',
+	'social_core.pipeline.social_auth.associate_user',
+	'social_core.pipeline.social_auth.load_extra_data',
+	'social_core.pipeline.user.user_details',
+)
+
+SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_KEY = env("MICROSOFT_AUTH_CLIENT_ID")
+SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_SECRET = env("MICROSOFT_AUTH_CLIENT_SECRET")
+SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_TENANT_ID = env("MICROSOFT_AUTH_TENANT_ID")
+SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_RESOURCE = 'https://graph.microsoft.com/'
+SOCIAL_AUTH_AZUREAD_TENANT_OAUTH2_SCOPE = ["User.Read"]
+
+AUTHENTICATION_BACKENDS = [
+	"social_core.backends.azuread_tenant.AzureADTenantOAuth2",  # python-social-auth (for Microsoft)
+	'django.contrib.auth.backends.ModelBackend'
+]
 
 AUTH_PASSWORD_VALIDATORS = [
 	{

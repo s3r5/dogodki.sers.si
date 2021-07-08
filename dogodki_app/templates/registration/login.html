@@ -4,7 +4,7 @@
 {% block main %}
 <div class="row">
 	<div class="col-md-6">
-		<div class="card">
+		<div class="card mb-3">
 			<div class="card-header"><i class="fas fa-key"></i> Lokalna prijava</div>
 			<div class="card-body">
 				<form action="" method="POST">
@@ -41,6 +41,14 @@
 		</div>
 	</div>
 	<div class="col-md-6">
+		<div class="card mb-3">
+			<div class="card-header"><i class="far fa-address-card"></i> Prijava z Microsoft računom</div>
+			<div class="card-body text-center">
+				<a href="{% url "social:begin" "azuread-tenant-oauth2" %}">
+					<img src="{% static 'microsoft.svg' %}" alt="Microsoft logo" width="300px">
+				</a>
+			</div>
+		</div>
 		<div class="card">
 			<div class="card-header"><i class="far fa-address-card"></i> AAI Prijava</div>
 			<div class="card-body text-center">

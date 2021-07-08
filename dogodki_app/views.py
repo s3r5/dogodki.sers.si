@@ -9,10 +9,16 @@ from django.utils import timezone
 
 from datetime import date
 
-from dogodki_app import models
-from dogodki_app.util import FormsetMixin
+from . import models
+from .util import FormsetMixin
 
 # Create your views here.
+
+class ProfilView(DetailView):
+	template_name = "dogodki/profil.html"
+	
+	def get_object(self, **kwargs):
+		return self.request.user
 
 class DashboardView(LoginRequiredMixin, TemplateView):
 	template_name = "dogodki/dashboard.html"
