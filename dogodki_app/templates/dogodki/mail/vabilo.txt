@@ -7,4 +7,4 @@ Na portalu SERŠ Dogodki se je odprl nov dogodek:
 
 Prosimo vas, da se na dogodek čim prej prijavite preko spodnje povezave:
 
-https://dogodki.frangez.me{% url "dogodek" pk=dogodek.pk %}
+https://dogodki.sers.si{% url "dogodek" pk=dogodek.pk %}
