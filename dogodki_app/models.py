@@ -8,6 +8,7 @@ from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
 	oddelek = models.CharField(max_length=5, blank=True, null=True)
+	fresh = models.BooleanField(default=False, blank=False, null=False)
 	
 	def __str__(self):
 		return self.first_name + " " + self.last_name
