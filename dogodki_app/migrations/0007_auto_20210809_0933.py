@@ -4,25 +4,24 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+	dependencies = [
+		('dogodki_app', '0006_povabilo_email_poslan'),
+	]
 
-    dependencies = [
-        ('dogodki_app', '0006_povabilo_email_poslan'),
-    ]
-
-    operations = [
-        migrations.AddField(
-            model_name='user',
-            name='fresh',
-            field=models.BooleanField(default=False),
-        ),
-        migrations.AlterField(
-            model_name='dogodek',
-            name='opis',
-            field=models.TextField(blank=True, null=True),
-        ),
-        migrations.AlterField(
-            model_name='skupina',
-            name='opis',
-            field=models.TextField(blank=True, null=True),
-        ),
-    ]
+	operations = [
+		migrations.AddField(
+			model_name='user',
+			name='fresh',
+			field=models.BooleanField(default=False),
+		),
+		migrations.AlterField(
+			model_name='dogodek',
+			name='opis',
+			field=models.TextField(blank=True, null=True),
+		),
+		migrations.AlterField(
+			model_name='skupina',
+			name='opis',
+			field=models.TextField(blank=True, null=True),
+		),
+	]
