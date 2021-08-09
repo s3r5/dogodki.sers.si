@@ -18,6 +18,9 @@ class Dogodek(models.Model):
 	rok_prijave = models.DateTimeField()
 	opis = models.TextField(null=True, blank=True)
 
+	# skupine <= Skupina
+	# povabljeni <= Povabilo
+
 	@property
 	def število_mest(self):
 		# TODO: Optimizacija?
@@ -45,6 +48,8 @@ class Skupina(models.Model):
 
 	dogodek = models.ForeignKey(Dogodek, on_delete=models.CASCADE, related_name="skupine")
 
+	# prijavljeni <= Povabilo
+
 	class Meta:
 		verbose_name = "Skupina"
 		verbose_name_plural = "Skupine"
@@ -54,9 +59,10 @@ class Skupina(models.Model):
 
 class Povabilo(models.Model):
 	uporabnik = models.ForeignKey(User, on_delete=models.CASCADE)
+	email_poslan = models.BooleanField(default=False)
+
 	skupina = models.ForeignKey(Skupina, blank=True, null=True, related_name="prijavljeni", on_delete=models.CASCADE)
 	dogodek = models.ForeignKey(Dogodek, on_delete=models.CASCADE, related_name="povabljeni")
-	email_poslan = models.BooleanField(default=False)
 
 	def clean(self):
 		if self.skupina:
