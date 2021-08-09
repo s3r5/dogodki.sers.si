@@ -2,6 +2,7 @@ from django import forms
 from django.shortcuts import redirect
 from django.urls import path
 from django.views.generic import FormView
+from django.db.models import Q
 
 from import_export.admin import ImportExportModelAdmin
 from import_export.resources import ModelResource
@@ -135,15 +136,15 @@ class UserResource(ModelResource):
     def after_import(self, dataset, result, using_transactions, dry_run, **kwargs):
         if dry_run:
             return
+        # Ne odstrani administratorjav oz. staff-a
         User.objects.filter(fresh=False, is_staff=False).delete()
+        # Spremeni vse "frišne" uporabnike v "stare"
         User.objects.filter(fresh=True).update(fresh=False)
 
     class Meta:
         model = User
-        fields = ("first_name", "last_name", "email", "oddelek", "username", "fresh")
+        fields = ("first_name", "last_name", "email", "oddelek", "username")
         import_id_fields = ("email",)
-        # skip_unchanged = True
-        # report_skipped = True
 
 
 @admin.register(User)
