@@ -83,6 +83,7 @@ class PovabiloAdmin(admin.ModelAdmin):
 		return povabilo.uporabnik.oddelek
 
 	povabilo_oddelek.short_description = "oddelek"
+	povabilo_oddelek.admin_order_field = "uporabnik__oddelek"
 
 	def get_form(self, request, obj=None, **kwargs):
 		form = super().get_form(request, obj, **kwargs)
