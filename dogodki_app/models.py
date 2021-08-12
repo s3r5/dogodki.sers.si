@@ -50,12 +50,23 @@ class Skupina(models.Model):
 
 	# prijavljeni <= Povabilo
 
+	# def clean(self):
+	# 	if self.skupina:
+	# 		prijavljeni = self.skupina.prijavljeni.filter(uporabnik__oddelek=self.uporabnik.oddelek).count()
+	# 		if prijavljeni >= self.skupina.število_mest:
+	# 			raise ValidationError("Vsa mesta so zasedena")
+
 	class Meta:
 		verbose_name = "Skupina"
 		verbose_name_plural = "Skupine"
 
 	def __str__(self):
 		return "%s: %s" % (self.dogodek, self.naslov)
+
+# class SkupinaOmejitev(models.Model):
+# 	število = models.PositiveIntegerField(validators=[MinValueValidator(1)])
+#
+# 	skupina = models.ForeignKey(Skupina, on_delete=models.CASCADE)
 
 class Povabilo(models.Model):
 	uporabnik = models.ForeignKey(User, on_delete=models.CASCADE)
