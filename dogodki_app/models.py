@@ -45,6 +45,7 @@ class Skupina(models.Model):
 	naslov = models.CharField(max_length=50)
 	opis = models.TextField(null=True, blank=True)
 	število_mest = models.PositiveIntegerField(validators=[MinValueValidator(1)])
+	omejitev_na_oddelek = models.PositiveIntegerField(validators=[MinValueValidator(1)])
 
 	dogodek = models.ForeignKey(Dogodek, on_delete=models.CASCADE, related_name="skupine")
 
