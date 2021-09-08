@@ -1,16 +1,23 @@
-from django.db import models
-from django.core.validators import MinValueValidator
-from django.core.exceptions import ValidationError
-from django.urls.base import reverse
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
+from django.db import models
+from django.urls.base import reverse
+
 
 # Create your models here.
 
 class User(AbstractUser):
 	oddelek = models.CharField(max_length=5, blank=True, null=True)
-	
+	fresh = models.BooleanField(default=False, blank=False, null=False)
+
+	# def save(self, *args, **kwargs):
+	#     self.fresh = False
+	#     super().save(*args, **kwargs)
+
 	def __str__(self):
 		return self.first_name + " " + self.last_name
+
 
 class Dogodek(models.Model):
 	naslov = models.CharField(max_length=50)
@@ -38,6 +45,7 @@ class Dogodek(models.Model):
 	def get_absolute_url(self):
 		return reverse("dogodek", kwargs={"pk": self.pk})
 
+
 class Skupina(models.Model):
 	naslov = models.CharField(max_length=50)
 	opis = models.TextField(null=True, blank=True)
@@ -51,6 +59,7 @@ class Skupina(models.Model):
 
 	def __str__(self):
 		return "%s: %s" % (self.dogodek, self.naslov)
+
 
 class Povabilo(models.Model):
 	uporabnik = models.ForeignKey(User, on_delete=models.CASCADE)
