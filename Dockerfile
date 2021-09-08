@@ -22,4 +22,6 @@ RUN apt purge -y gcc musl-dev libffi-dev
 
 COPY . .
 
-CMD exec gunicorn dogodki_core.wsgi:application --bind 0.0.0.0:${PORT:-80} --capture-output
+COPY ./docker-entrypoint.sh /usr/local/bin/
+
+CMD ["docker-entrypoint.sh"]
