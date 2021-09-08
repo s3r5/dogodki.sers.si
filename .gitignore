@@ -63,3 +63,5 @@ desktop.ini
 
 # .local dir
 .local/
+
+.idea/
