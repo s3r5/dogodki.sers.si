@@ -9,7 +9,7 @@ from django.urls.base import reverse
 
 class User(AbstractUser):
 	oddelek = models.CharField(max_length=5, blank=True, null=True)
-	fresh = models.BooleanField(default=False, blank=False, null=False)
+	fresh = models.BooleanField(default=True, blank=False, null=False)
 
 	# def save(self, *args, **kwargs):
 	#     self.fresh = False

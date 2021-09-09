@@ -1,4 +1,4 @@
-FROM python:3.6-slim
+FROM python:3.9-slim
 
 WORKDIR /usr/src/app
 EXPOSE ${PORT:-80}
@@ -15,7 +15,7 @@ RUN apt update && \
 COPY Pipfile* ./
 
 # Sync (install) packages
-RUN PIP_NO_CACHE_DIR=true pipenv install --system --deploy --ignore-pipfile && \
+RUN PIP_NO_CACHE_DIR=true pipenv install --system --deploy --dev --ignore-pipfile && \
 	pip install --no-cache-dir gunicorn
 
 RUN apt purge -y gcc musl-dev libffi-dev

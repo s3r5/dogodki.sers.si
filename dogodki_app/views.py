@@ -1,3 +1,4 @@
+from django.core.exceptions import PermissionDenied
 from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
@@ -12,13 +13,15 @@ from datetime import date
 from . import models
 from .util import FormsetMixin
 
+
 # Create your views here.
 
 class ProfilView(DetailView):
 	template_name = "dogodki/profil.html"
-	
+
 	def get_object(self, **kwargs):
 		return self.request.user
+
 
 class DashboardView(LoginRequiredMixin, TemplateView):
 	template_name = "dogodki/dashboard.html"
@@ -35,6 +38,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 			"odprta_povabila": povabila.filter(dogodek__datum__gte=danes),
 			"pretekla_povabila": povabila.filter(dogodek__datum__lt=danes)
 		}
+
 
 class DogodekView(LoginRequiredMixin, DetailView):
 	template_name = "dogodki/dogodek.html"
@@ -83,9 +87,10 @@ class DogodekView(LoginRequiredMixin, DetailView):
 
 		context["skupine"] = obj_skupine
 
-		if context["povabilo"].dogodek.rok_prijave < timezone.now():
-			context["poteklo"] = True
+		context["poteklo"] = "povabilo" in context and context["povabilo"].dogodek.rok_prijave < timezone.now()
+
 		return context
+
 
 class EditDogodekMixin(FormsetMixin, PermissionRequiredMixin):
 	template_name = "dogodki/dogodek_edit.html"
@@ -94,11 +99,14 @@ class EditDogodekMixin(FormsetMixin, PermissionRequiredMixin):
 	form_class = modelform_factory(models.Dogodek, exclude=())
 	formset_class = inlineformset_factory(models.Dogodek, models.Skupina, exclude=(), extra=0, min_num=1)
 
+
 class UstvariDogodekView(EditDogodekMixin, CreateView):
 	permission_required = "dogodek.can_create"
 
+
 class UrediDogodekView(EditDogodekMixin, UpdateView):
 	permission_required = "dogodek.can_create"
+
 
 class DogodekPrijavaForm(ModelForm):
 
@@ -112,16 +120,17 @@ class DogodekPrijavaForm(ModelForm):
 		model = models.Povabilo
 		exclude = ("uporabnik", "dogodek")
 
+
 class DogodekPrijavaView(LoginRequiredMixin, UpdateView):
 	form_class = DogodekPrijavaForm
 
 	def get_object(self):
 		return models.Povabilo.objects.get(dogodek__pk=self.kwargs["pk"], uporabnik=self.request.user.pk)
-	
+
 	def get_success_url(self):
 		return self.object.dogodek.get_absolute_url()
-	
+
 	def form_invalid(self, form):
 		for error in form.errors.values():
-				messages.add_message(self.request, messages.ERROR, error.as_text())
+			messages.add_message(self.request, messages.ERROR, error.as_text())
 		return redirect(self.object.dogodek.get_absolute_url())

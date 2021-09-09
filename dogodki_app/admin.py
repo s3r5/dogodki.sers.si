@@ -120,7 +120,6 @@ class UserResource(ModelResource):
 
 	def before_import_row(self, row, **kwargs):
 		row["username"] = row["Email"].split("@")[0]
-		row["fresh"] = True
 
 		return row
 
