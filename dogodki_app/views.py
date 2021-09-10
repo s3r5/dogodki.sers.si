@@ -86,7 +86,6 @@ class DogodekView(LoginRequiredMixin, DetailView):
 			obj_skupine.append(obj_skupina)
 
 		context["skupine"] = obj_skupine
-
 		context["poteklo"] = "povabilo" in context and context["povabilo"].dogodek.rok_prijave < timezone.now()
 
 		return context
