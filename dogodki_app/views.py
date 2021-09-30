@@ -28,10 +28,9 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
 	def get_context_data(self):
 		povabila = models.Povabilo.objects.filter(uporabnik=self.request.user)
-		# TODO: Administratorji naj vidijo vse dogodke 
 		# Spodnje zahteva PostgreSQL!
-		# if self.request.user.is_staff:
-		# 	povabila = models.Povabilo.objects.distinct("dogodek")
+		if self.request.user.is_staff:
+			povabila = models.Povabilo.objects.distinct("dogodek")
 		# Možna alternativa? https://stackoverflow.com/a/49291760
 		danes = date.today()
 		return {
