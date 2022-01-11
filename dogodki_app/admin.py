@@ -77,8 +77,20 @@ class DogodekAdmin(admin.ModelAdmin):
 		return my_urls + urls
 
 
+class PovabiloResource(ModelResource):
+	dogodek__naslov = Field(attribute="dogodek__naslov", column_name="Naslov dogodka")
+	skupina__naslov = Field(attribute="skupina__naslov", column_name="Ime skupine")
+	uporabnik__first_name = Field(attribute="uporabnik__first_name", column_name="Dijak - ime")
+	uporabnik__last_name = Field(attribute="uporabnik__last_name", column_name="Dijak - priimek")
+	uporabnik__oddelek = Field(attribute="uporabnik__oddelek", column_name="Dijak - oddelek")
+
+	class Meta:
+		model = Povabilo
+		fields = ("dogodek__naslov", "skupina__naslov", "uporabnik__first_name", "uporabnik__last_name", "uporabnik__oddelek")
+
 @admin.register(Povabilo)
-class PovabiloAdmin(admin.ModelAdmin):
+class PovabiloAdmin(ImportExportModelAdmin):
+	resource_class = PovabiloResource
 	search_fields = (
 		"uporabnik__first_name", "uporabnik__last_name", "uporabnik__username", "skupina__naslov", "uporabnik__oddelek")
 	autocomplete_fields = ("uporabnik",)
