@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.urls.base import reverse
+from django.utils import timezone
 
 
 # Create your models here.
@@ -22,6 +23,7 @@ class User(AbstractUser):
 class Dogodek(models.Model):
 	naslov = models.CharField(max_length=50)
 	datum = models.DateField()
+	cas_prijave = models.DateTimeField(default=timezone.now)
 	rok_prijave = models.DateTimeField()
 	opis = models.TextField(null=True, blank=True)
 
