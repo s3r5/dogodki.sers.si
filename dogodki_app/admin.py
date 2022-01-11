@@ -164,5 +164,8 @@ class CustomUserAdmin(UserAdmin, ImportExportModelAdmin):
 	formats = [base_formats.XLS]
 	import_template_name = "dogodki/import.html"
 
+	list_display = ("username", "email", "first_name", "last_name", "is_staff", "oddelek")
+	list_filter = ("oddelek", "is_staff", "is_superuser", "is_active")
+
 
 CustomUserAdmin.fieldsets += ('Custom fields set', {'fields': ('oddelek',)}),
