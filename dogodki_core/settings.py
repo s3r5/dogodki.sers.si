@@ -101,10 +101,9 @@ DATABASES = {
 }
 
 # Cache
-if env("CACHE_URL", default=None) :
-	CACHES = {
-		'default': env.cache()
-	}
+CACHES = {
+	'default': env.cache() if env("CACHE_URL", default=None) else {}
+}
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 
@@ -204,5 +203,5 @@ DATE_FORMAT = "j. N Y"
 DATETIME_FORMAT = "j. N Y H:m"
 
 # Čas
-TIME_ZONE = 'CET'
+TIME_ZONE = 'Europe/Ljubljana'
 USE_TZ = True
