@@ -92,14 +92,17 @@ class PovabiloResource(ModelResource):
 class PovabiloAdmin(ImportExportModelAdmin):
 	resource_class = PovabiloResource
 	search_fields = (
-		"uporabnik__first_name", "uporabnik__last_name", "uporabnik__username", "skupina__naslov", "uporabnik__oddelek")
+		"uporabnik__first_name", "uporabnik__last_name", "uporabnik__username", "uporabnik__email", "skupina__naslov", "uporabnik__oddelek")
 	autocomplete_fields = ("uporabnik",)
 
-	list_display = ("dogodek", "uporabnik", "skupina", "povabilo_oddelek")
+	list_display = ("dogodek", "uporabnik", "uporabnik_email", "skupina", "povabilo_oddelek")
 	list_filter = ("uporabnik__oddelek", SkupinaListFilter, "dogodek")
 
 	def povabilo_oddelek(self, povabilo):
 		return povabilo.uporabnik.oddelek
+
+	def uporabnik_email(self, povabilo):
+		return povabilo.uporabnik.email
 
 	povabilo_oddelek.short_description = "oddelek"
 	povabilo_oddelek.admin_order_field = "uporabnik__oddelek"
