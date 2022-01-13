@@ -95,7 +95,7 @@ class PovabiloAdmin(ImportExportModelAdmin):
 		"uporabnik__first_name", "uporabnik__last_name", "uporabnik__username", "uporabnik__email", "skupina__naslov", "uporabnik__oddelek")
 	autocomplete_fields = ("uporabnik",)
 
-	list_display = ("dogodek", "uporabnik", "uporabnik_email", "skupina", "povabilo_oddelek")
+	list_display = ("dogodek", "uporabnik", "uporabnik_email", "skupina", "prijavljeni_od_celote", "povabilo_oddelek")
 	list_filter = ("uporabnik__oddelek", SkupinaListFilter, "dogodek")
 
 	def povabilo_oddelek(self, povabilo):
@@ -103,6 +103,9 @@ class PovabiloAdmin(ImportExportModelAdmin):
 
 	def uporabnik_email(self, povabilo):
 		return povabilo.uporabnik.email
+
+	def prijavljeni_od_celote(self, povabilo):
+		return f"{povabilo.skupina.prijavljeni.filter(uporabnik__oddelek=povabilo.uporabnik.oddelek).count()}/{povabilo.skupina.število_mest}" if (povabilo.skupina is not None) else "N/A"
 
 	povabilo_oddelek.short_description = "oddelek"
 	povabilo_oddelek.admin_order_field = "uporabnik__oddelek"
