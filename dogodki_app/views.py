@@ -1,4 +1,6 @@
 from django.core.exceptions import PermissionDenied
+from django.utils.decorators import method_decorator
+from django.views.decorators.vary import vary_on_cookie
 from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
@@ -11,6 +13,7 @@ from django.utils import timezone
 from datetime import date
 
 from . import models
+from .forms import DogodekPrijavaForm
 from .util import FormsetMixin
 
 
@@ -23,6 +26,7 @@ class ProfilView(DetailView):
 		return self.request.user
 
 
+@method_decorator(vary_on_cookie, name="dispatch")
 class DashboardView(LoginRequiredMixin, TemplateView):
 	template_name = "dogodki/dashboard.html"
 
@@ -39,6 +43,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 		}
 
 
+@method_decorator(vary_on_cookie, name="dispatch")
 class DogodekView(LoginRequiredMixin, DetailView):
 	template_name = "dogodki/dogodek.html"
 	model = models.Dogodek
@@ -107,19 +112,6 @@ class UstvariDogodekView(EditDogodekMixin, CreateView):
 
 class UrediDogodekView(EditDogodekMixin, UpdateView):
 	permission_required = "dogodek.can_create"
-
-
-class DogodekPrijavaForm(ModelForm):
-
-	def clean(self):
-		if self.instance.dogodek.rok_prijave < timezone.now():
-			raise ValidationError("Rok za prijavo je potekel!")
-
-		return super().clean()
-
-	class Meta:
-		model = models.Povabilo
-		exclude = ("uporabnik", "dogodek")
 
 
 class DogodekPrijavaView(LoginRequiredMixin, UpdateView):
