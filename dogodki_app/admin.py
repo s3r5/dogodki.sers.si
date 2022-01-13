@@ -106,6 +106,7 @@ class PovabiloAdmin(ImportExportModelAdmin):
 
 	def prijavljeni_od_celote(self, povabilo):
 		return f"{povabilo.skupina.prijavljeni.filter(uporabnik__oddelek=povabilo.uporabnik.oddelek).count()}/{povabilo.skupina.število_mest}" if (povabilo.skupina is not None) else "N/A"
+	prijavljeni_od_celote.short_description = "Prijavljeni od skupine"
 
 	povabilo_oddelek.short_description = "oddelek"
 	povabilo_oddelek.admin_order_field = "uporabnik__oddelek"
