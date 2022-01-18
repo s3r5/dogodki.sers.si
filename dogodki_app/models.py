@@ -81,3 +81,17 @@ class Povabilo(models.Model):
 
 	def __str__(self):
 		return "%s: %s (%s)" % (self.dogodek, self.uporabnik, self.skupina)
+
+
+class Obvestilo(models.Model):
+	naslov = models.CharField(max_length=60)
+	skupine = models.ManyToManyField(Skupina)
+	vsebina = models.TextField(blank=True, null=True)
+	email_poslan = models.BooleanField(default=False)
+
+	class Meta:
+		verbose_name = "Obvestilo"
+		verbose_name_plural = "Obvestila"
+
+	def __str__(self):
+		return f"{self.naslov}"

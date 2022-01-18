@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.admin import UserAdmin
+from django.core.mail import EmailMessage
 from django.shortcuts import redirect
 from django.urls import path
 from django.views.generic import FormView
@@ -176,3 +177,34 @@ class CustomUserAdmin(UserAdmin, ImportExportModelAdmin):
 
 
 CustomUserAdmin.fieldsets += ('Custom fields set', {'fields': ('oddelek',)}),
+
+@admin.register(Obvestilo)
+class ObvestiloAdmin(admin.ModelAdmin):
+	filter_horizontal = ("skupine",)
+
+	def save_related(self, request, form, formsets, change):
+		super().save_related(request, form, formsets, change)
+
+		obvestilo = Obvestilo.objects.get(id=form.instance.id)
+		if (change is False or change is None) and obvestilo.email_poslan is False:
+			emails = []
+
+			for skupina in obvestilo.skupine.all():
+				for prijavljen in skupina.prijavljeni.all():
+					emails.append(prijavljen.uporabnik.email)
+
+			email = EmailMessage(
+				subject=obvestilo.naslov,
+				body=obvestilo.vsebina,
+				from_email=None,
+				to=[],
+				bcc=list(dict.fromkeys(emails))
+			)
+			email.send()
+
+			Obvestilo.objects.filter(id=form.instance.id).update(email_poslan=True)
+
+	def get_readonly_fields(self, request, obj=None):
+		if obj:
+			return ["naslov", "skupine", "vsebina", "email_poslan"]
+		return self.readonly_fields
