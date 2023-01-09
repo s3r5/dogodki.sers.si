@@ -4,10 +4,11 @@ name = "pypi"
 verify_ssl = true
 
 [packages]
-django = "*"
-django-environ = "*"
+django = "==4.1.5"
+django-environ = "==0.9.0"
 social-auth-app-django = "==3.1.0"
 django-import-export = "==1.2.0"
+django-jazzmin = "==2.6.0"
 cryptography = "==3.4.7"
 psycopg2-binary = "*"
 tablib = "==0.14.0"

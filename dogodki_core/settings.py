@@ -14,6 +14,8 @@ import environ
 INSTALLED_APPS = [
 	"dogodki_app",
 
+	"jazzmin",
+
 	"import_export",
 
 	"social_django",
