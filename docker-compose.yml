@@ -7,16 +7,13 @@ services:
      - db_data:/var/lib/postgresql/data
 
   app:
-    image: registry.gitlab.com/franga2000/ip-2019:latest
-    build: .
+    image: ghcr.io/s3r5/dogodki.sers.si:master
     depends_on:
      - db
     volumes:
      - app_static:/usr/src/static
      - app_media:/usr/src/media
     env_file: .env
-    environment:
-     - DATABASE_URL=postgres://postgres:example@db/postgres
 
   http:
     image: nginx:1.15-alpine
