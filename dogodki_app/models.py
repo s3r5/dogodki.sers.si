@@ -9,7 +9,7 @@ from django.utils import timezone
 # Create your models here.
 
 class User(AbstractUser):
-	oddelek = models.CharField(max_length=5, blank=True, null=True)
+	oddelek = models.CharField(max_length=30, blank=True, null=True)
 	fresh = models.BooleanField(default=True, blank=False, null=False)
 
 	# def save(self, *args, **kwargs):
