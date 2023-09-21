@@ -1,4 +1,4 @@
-FROM python:3.9-slim
+FROM python:3.11.5
 
 WORKDIR /usr/src/app
 EXPOSE ${PORT:-80}
