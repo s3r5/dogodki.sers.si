@@ -5,30 +5,19 @@
 {% load static %}
 
 {% block content %}
-<h2>Navodila za uporabo: </h2>
-<h3>Opozorilo:</h3>
-<p>
-	Zaradi nezanesljivosti bralnikov datoteke <code>xlsx</code> (Microsoft Excel) niso podprte. <b>Trenutno je podprt samo format <code>xls</code> (Microsoft Excel 2003).</b>
-</p>
-<h3>Priprava datoteke</h3>
-<p>
-	eAsistent podatke izvaža v nestandardnem formatu, zato jih je pred uvozom potrebno pripraviti:
-	<ol>
-		<li>Prenešeno datoteko iz eAsistenta odprite v programu za urejanje preglednic (npr. Microsoft Excel)</li>
-		<li><i>Izbrišite eAsistent logotip</i></li>
-		<li>Izbrišite celotno prvo (prazno) vrstico</li>
-		<li>Datoteko shranite v enem izmed podprtih formatov</li>
-	</ol>
-</p>
+<pre>
+Navodila za uporabo:
+(Opozorilo: Zaradi nezanesljivosti bralnikov datoteke "xlsx" (Microsoft Excel) niso podprte. Trenutno je podprt samo format "xls" (Microsoft Excel 2003))
 
-<h3>Uvoz:</h3>
-<p>
-	Izberite datoteko za uvoz, v spustnem meniju izberite ustrezen format in kliknite gumb "Submit".
-</p>
-<p>
-	Ko se vam prikaže tabela preverite, če so podatki pravilni. Ko ste v to prepričani, uvoz potrdite z gumbom "Confirm import".
-</p>
-<hr>
-<br>
+Priprava datoteke:
++ eAsistent podatke izvaža v nestandardnem formatu, zato jih je pred uvozom potrebno pripraviti +
+1. Prenešeno datoteko iz eAsistenta odprite v programu za urejanje preglednic (npr. Microsoft Excel)
+2. Izbrišite eAsistent logotip
+3. Datoteko shranite v enem izmed podprtih formatov
+
+Uvoz:
+Izberite datoteko za uvoz, v spustnem meniju izberite ustrezen format in kliknite gumb "Submit".
+Ko se vam prikaže tabela preverite, če so podatki pravilni. Ko ste v to prepričani, uvoz potrdite z gumbom "Confirm import".
+</pre>
 {{ block.super }}
 {% endblock %}

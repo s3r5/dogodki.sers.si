@@ -19,6 +19,7 @@ INSTALLED_APPS = [
 	"social_django",
 
 	"django.contrib.sites",
+	"jazzmin",
 	'django.contrib.admin',
 	'django.contrib.auth',
 	'django.contrib.contenttypes',
