@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:11-alpine
+    ports:
+      - 5432:5432
+    volumes:
+     - db_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=dogodki
+      - POSTGRES_USER=dogodki
+      - POSTGRES_PASSWORD=dogodki
+
+volumes:
+  db_data:
