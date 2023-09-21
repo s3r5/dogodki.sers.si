@@ -51,16 +51,20 @@ class DogodekView(LoginRequiredMixin, DetailView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 
+		is_staff = self.request.user.is_staff
+
 		try:
 			context["povabilo"] = models.Povabilo.objects.get(dogodek=self.object, uporabnik=self.request.user)
 		except:
-			if not self.request.user.is_staff:
+			if not is_staff:
 				raise PermissionDenied()
 
 		obj_skupine = []
 		found = False
 		for skupina in self.object.skupine.all():
-			prijavljeni = skupina.prijavljeni.filter(uporabnik__oddelek=self.request.user.oddelek).all()
+			prijavljeni = \
+				skupina.prijavljeni.all() if is_staff \
+				else skupina.prijavljeni.filter(uporabnik__oddelek=self.request.user.oddelek).all()
 
 			obj_skupina = {
 				"pk": skupina.pk,
@@ -77,6 +81,7 @@ class DogodekView(LoginRequiredMixin, DetailView):
 			for prijava in prijavljeni:
 				obj_prijava = {
 					"uporabnik": prijava.uporabnik,
+					"sanitiziran_oddelek": f" ({prijava.uporabnik.oddelek})" if is_staff else "",
 					"jaz": False
 				}
 
