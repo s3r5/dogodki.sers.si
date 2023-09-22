@@ -66,6 +66,23 @@ MEDIA_URL = "/media/"
 
 WSGI_APPLICATION = 'dogodki_core.wsgi.application'
 
+JAZZMIN_SETTINGS = {
+	"welcome_sign": "Gremo športat, al kva?",
+	"site_brand": "Dogodki",
+
+	"search_model": ["dogodki_app.User", "dogodki_app.Dogodek"],
+
+	"topmenu_links": [
+		{"model": "dogodki_app.Dogodek"},
+	],
+	"icons": {
+		"dogodki_app.User": "fas fa-user",
+	},
+	"hide_models": ["auth.Group"],
+
+	"copyright": "Nejc Drobnič",
+}
+
 #######################
 #                     #
 #   INSTANCE CONFIG   #
