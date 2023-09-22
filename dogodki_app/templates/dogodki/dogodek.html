@@ -18,8 +18,10 @@
 			<div{% if odprto %} class="text-danger"{% endif %}><i class="far fa-calendar-alt"></i> Začetek prijave: {{ dogodek.cas_prijave }}</div>
 			<div{% if poteklo %} class="text-danger"{% endif %}><i class="far fa-calendar-alt"></i> Rok prijave: {{ dogodek.rok_prijave }}</div>
 			<div><i class="fas fa-list"></i> {{ dogodek.skupine.count }} {{ dogodek.skupine.count | pluralize:"skupina,skupin" }}</div> <!-- TODO: pluralize_pl -->
-			<div><i class="fas fa-users"></i> {{ dogodek.število_mest }} mest, {{ dogodek.število_navoljo }} na voljo</div>
-			<div class="text-{{ povabilo.skupina|yesno:"success,danger"}}"><i class="fas fa-list"></i> Skupina: {{ povabilo.skupina.naslov|default:"niste še prijavljeni!" }}</div>
+            {% if not is_staff or povabilo %}
+			    <div><i class="fas fa-users"></i> {{ dogodek.število_mest }} mest, {{ dogodek.število_navoljo }} na voljo</div>
+			    <div class="text-{{ povabilo.skupina|yesno:"success,danger"}}"><i class="fas fa-list"></i> Skupina: {{ povabilo.skupina.naslov|default:"niste še prijavljeni!" }}</div>
+            {% endif %}
 		</div>
 	</div>
 </div>
@@ -30,8 +32,12 @@
 	<div class="card {% if skupina.moja %} border-success{% endif %}">
 		<div class="card-header justify-content-between">
 			<div class="{% if skupina.polna %}text-danger{% endif %}{% if skupina.moja %}text-success{% endif %}">
-				<i class="fas fa-users"></i> {{ skupina.naslov }} 
-				<span class="badge float-right badge-{{ skupina.polna|yesno:"danger,primary" }}">{{ skupina.število_prijavljenih }} / {{ skupina.število_mest }}</span>
+				<i class="fas fa-users"></i> {{ skupina.naslov }}
+                {% if not is_staff or povabilo %}
+                    <span class="badge float-right badge-{{ skupina.polna|yesno:"danger,primary" }}">{{ skupina.število_prijavljenih }} / {{ skupina.število_mest }}</span>
+                {% else %}
+                    <span class="badge float-right badge-primary px-2">{{ skupina.število_prijavljenih }}</span>
+                {% endif %}
 			</div>
 			{% if skupina.opis %}
 			<small class="card-body p-0">

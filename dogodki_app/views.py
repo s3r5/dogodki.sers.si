@@ -52,6 +52,7 @@ class DogodekView(LoginRequiredMixin, DetailView):
 		context = super().get_context_data(**kwargs)
 
 		is_staff = self.request.user.is_staff
+		context["is_staff"] = is_staff
 
 		try:
 			context["povabilo"] = models.Povabilo.objects.get(dogodek=self.object, uporabnik=self.request.user)
@@ -70,7 +71,7 @@ class DogodekView(LoginRequiredMixin, DetailView):
 				"pk": skupina.pk,
 				"opis": skupina.opis,
 				"naslov": skupina.naslov,
-				"število_mest": skupina.število_mest,
+				"število_mest":  skupina.število_mest,
 				"število_prijavljenih": prijavljeni.count(),
 				"prijavljeni": [],
 				"moja": False
