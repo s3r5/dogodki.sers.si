@@ -4,14 +4,13 @@ from django.core.mail import EmailMessage
 from django.shortcuts import redirect
 from django.urls import path
 from django.views.generic import FormView
-
 from import_export.admin import ImportExportModelAdmin
-from import_export.resources import ModelResource
 from import_export.fields import Field
 from import_export.formats import base_formats
+from import_export.resources import ModelResource
 
-from .util import pošlji_obvestila
 from .admin_util import *
+from .util import pošlji_obvestila
 
 # TODO: Popravi, ko bo obstajala prava relacija
 oddelki = lambda: ((oddelek, oddelek) for oddelek in
@@ -88,7 +87,7 @@ class PovabiloResource(ModelResource):
     class Meta:
         model = Povabilo
         fields = (
-        "dogodek__naslov", "skupina__naslov", "uporabnik__first_name", "uporabnik__last_name", "uporabnik__oddelek")
+            "dogodek__naslov", "skupina__naslov", "uporabnik__first_name", "uporabnik__last_name", "uporabnik__oddelek")
 
 
 @admin.register(Povabilo)
@@ -110,7 +109,7 @@ class PovabiloAdmin(ImportExportModelAdmin):
 
     def prijavljeni_od_celote(self, povabilo):
         return f"{povabilo.skupina.prijavljeni.filter(uporabnik__oddelek=povabilo.uporabnik.oddelek).count()}/{povabilo.skupina.število_mest}" if (
-                    povabilo.skupina is not None) else "N/A"
+                povabilo.skupina is not None) else "N/A"
 
     prijavljeni_od_celote.short_description = "Prijavljeni od skupine"
 

@@ -2,20 +2,21 @@
 {% block title %}Prijava · {{ block.super }}{% endblock title %}
 {% load static %}
 {% block main %}
-<div class="row">
+    <div class="row">
 
-	<div class="col"> <!-- Look at the 2 lines above before un commenting stuff -->
-		<div class="card mb-3">
-			<div class="card-header"><i class="far fa-address-card"></i> Prijava z Microsoft računom</div>
-			<div class="card-body text-center">
-                <a href="{% url "social:begin" "azuread-tenant-oauth2" %}">
-                    <div class="btn btn-dark">
-                        <img src="{% static 'microwindow.svg' %}" width="60" /> <span class="font-weight-bold text-light pl-3 pr-1">Prijavi se z Microsoft</span>
-                    </div>
-                </a>
-			</div>
-		</div>
-	</div>
+        <div class="col"> <!-- Look at the 2 lines above before un commenting stuff -->
+            <div class="card mb-3">
+                <div class="card-header"><i class="far fa-address-card"></i> Prijava z Microsoft računom</div>
+                <div class="card-body text-center">
+                    <a href="{% url "social:begin" "azuread-tenant-oauth2" %}">
+                        <div class="btn btn-dark">
+                            <img src="{% static 'microwindow.svg' %}" width="60"/> <span
+                                class="font-weight-bold text-light pl-3 pr-1">Prijavi se z Microsoft</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
 
-</div>
+    </div>
 {% endblock main %}

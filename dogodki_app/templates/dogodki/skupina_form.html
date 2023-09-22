@@ -1,25 +1,29 @@
 {% for field in skupina.hidden_fields %}
-	{{ field }}
+    {{ field }}
 {% endfor %}
 <div class="card mb-3 skupina" id="skupina-{{ counter }}">
-	<div class="card-header form-inline">
-		<i class="fas fa-users"></i> <input type="text" class="form-control-plaintext ml-1 p-0" name="skupine-{{ counter }}-naslov" style="width: auto;" value="{{ skupina.naslov.value|default:"" }}" placeholder="Naslov" required>
-	</div>
-	<div class="card-body">
-		<span class="text-danger">{{ skupina.naslov.število_mest }}</span>
-		<div class="form-group row">
-			<label for="skupine-{{ counter }}-število_mest" class="col-sm-3 col-form-label">Število mest:</label>
-			<div class="col-sm">
-				<input type="number" class="form-control" name="skupine-{{ counter }}-število_mest" min=1 value="{{ skupina.število_mest.value|default:"" }}" required>
-			</div>
-			<span class="text-danger">{{ skupina.errors.število_mest }}</span>
-		</div>
-		<div class="form-group" style="margin: 0 -15px">
-			<label for="skupine-{{ counter }}-opis" class="col-sm-3 col-form-label">Opis:</label>
-			<div class="col-sm">
-				<textarea class="form-control" name="skupine-{{ counter }}-opis">{{ skupina.opis.value|default:"" }}</textarea>
-			</div>
-			<span class="text-danger">{{ skupina.errors.opis }}</span>
-		</div>
-	</div>
+    <div class="card-header form-inline">
+        <i class="fas fa-users"></i> <input type="text" class="form-control-plaintext ml-1 p-0"
+                                            name="skupine-{{ counter }}-naslov" style="width: auto;"
+                                            value="{{ skupina.naslov.value|default:"" }}" placeholder="Naslov" required>
+    </div>
+    <div class="card-body">
+        <span class="text-danger">{{ skupina.naslov.število_mest }}</span>
+        <div class="form-group row">
+            <label for="skupine-{{ counter }}-število_mest" class="col-sm-3 col-form-label">Število mest:</label>
+            <div class="col-sm">
+                <input type="number" class="form-control" name="skupine-{{ counter }}-število_mest" min=1
+                       value="{{ skupina.število_mest.value|default:"" }}" required>
+            </div>
+            <span class="text-danger">{{ skupina.errors.število_mest }}</span>
+        </div>
+        <div class="form-group" style="margin: 0 -15px">
+            <label for="skupine-{{ counter }}-opis" class="col-sm-3 col-form-label">Opis:</label>
+            <div class="col-sm">
+                <textarea class="form-control"
+                          name="skupine-{{ counter }}-opis">{{ skupina.opis.value|default:"" }}</textarea>
+            </div>
+            <span class="text-danger">{{ skupina.errors.opis }}</span>
+        </div>
+    </div>
 </div>

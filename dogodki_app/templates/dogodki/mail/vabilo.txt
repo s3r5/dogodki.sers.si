@@ -1,9 +1,9 @@
 Pozdravljeni!
 
 Na portalu SERŠ Dogodki se je odprl nov dogodek:
-	{{ dogodek.naslov }}:
-		Datum dogodka: {{ dogodek.datum }}
-		Rok prijave: {{ dogodek.rok_prijave }}
+    {{ dogodek.naslov }}:
+        Datum dogodka: {{ dogodek.datum }}
+        Rok prijave: {{ dogodek.rok_prijave }}
 
 Prosimo vas, da se na dogodek čim prej prijavite preko spodnje povezave:
 

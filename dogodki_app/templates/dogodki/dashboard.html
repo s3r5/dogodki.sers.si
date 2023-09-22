@@ -1,41 +1,48 @@
 {% extends 'dogodki/base.html' %}
 {% block main %}
-<div class="row">
-	<div class="col-sm">
-		<div class="card">
-			<div class="card-header"><i class="far fa-clock"></i> Odprti dogodki</div>
-			<div class="list-group list-group-flush">
-			{% for povabilo in odprta_povabila %}
-				<a href="{{ povabilo.dogodek.get_absolute_url }}" class="list-group-item list-group-item-action">
-					<h5 class="mb-1">{{ povabilo.dogodek.naslov }}</h5>
-					<small><i class="far fa-calendar-alt"></i> {{ povabilo.dogodek.datum }}</small>
-					<small class="text-{{ povabilo.skupina|yesno:"success,danger"}}"><i class="fas fa-list"></i> {{ povabilo.skupina.naslov|default:"Niste še prijavljeni!" }}</small>
-				</a>
-			{% endfor %}
-			</div>
-		</div>
-	</div>
-	<div class="col-sm">
-		<div class="card">
-			<div class="card-header"><i class="far fa-calendar-alt"></i> Pretekli dogodki</div>
-			<div class="list-group list-group-flush">
-				{% for povabilo in pretekla_povabila %}
-				<a href="{{ povabilo.dogodek.get_absolute_url }}" class="list-group-item list-group-item-action">
-					<h5 class="mb-1">{{ povabilo.dogodek.naslov }}</h5>
-					<small><i class="far fa-calendar-alt"></i> {{ povabilo.dogodek.datum }}</small>
-					<small{% if not povabilo.skupina%} class="text-danger"{% endif %}><i class="fas fa-list"></i> {{ povabilo.skupina.naslov|default:"Niste se prijavili!" }}</small>
-					{% if povabilo.opravljen %}
-					<small class="text-danger"><i class="far fa-check-square"></i> opravljeno</small>
-					{% else %}
-					<small class="text-danger"><i class="fas fa-exclamation-triangle"></i> ni opravljeno</small>
-					{% endif %}
-				</a>
-				{% endfor %}{% comment %}
+    <div class="row">
+        <div class="col-sm">
+            <div class="card">
+                <div class="card-header"><i class="far fa-clock"></i> Odprti dogodki</div>
+                <div class="list-group list-group-flush">
+                    {% for povabilo in odprta_povabila %}
+                        <a href="{{ povabilo.dogodek.get_absolute_url }}"
+                           class="list-group-item list-group-item-action">
+                            <h5 class="mb-1">{{ povabilo.dogodek.naslov }}</h5>
+                            <small><i class="far fa-calendar-alt"></i> {{ povabilo.dogodek.datum }}</small>
+                            <small class="text-{{ povabilo.skupina|yesno:"success,danger" }}"><i
+                                    class="fas fa-list"></i> {{ povabilo.skupina.naslov|default:"Niste še prijavljeni!" }}
+                            </small>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-sm">
+            <div class="card">
+                <div class="card-header"><i class="far fa-calendar-alt"></i> Pretekli dogodki</div>
+                <div class="list-group list-group-flush">
+                    {% for povabilo in pretekla_povabila %}
+                        <a href="{{ povabilo.dogodek.get_absolute_url }}"
+                           class="list-group-item list-group-item-action">
+                            <h5 class="mb-1">{{ povabilo.dogodek.naslov }}</h5>
+                            <small><i class="far fa-calendar-alt"></i> {{ povabilo.dogodek.datum }}</small>
+                            <small{% if not povabilo.skupina %} class="text-danger"{% endif %}><i
+                                    class="fas fa-list"></i> {{ povabilo.skupina.naslov|default:"Niste se prijavili!" }}
+                            </small>
+                            {% if povabilo.opravljen %}
+                                <small class="text-danger"><i class="far fa-check-square"></i> opravljeno</small>
+                            {% else %}
+                                <small class="text-danger"><i class="fas fa-exclamation-triangle"></i> ni
+                                    opravljeno</small>
+                            {% endif %}
+                        </a>
+                    {% endfor %}{% comment %}
 				<a href="#" class="list-group-item">
 					<h5 class="mb-1">Pokaži več...</h5>
 				</a>{% endcomment %}
-			</div>
-		</div>
-	</div>
-</div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock main %}

@@ -1,88 +1,95 @@
 {% extends 'dogodki/base.html' %}
 {% block title %}{{ form.naslov.value|default:"Nov dogodek" }} · urejanje · {{ block.super }}{% endblock title %}
 {% block main %}
-<form action="" method="POST" class="row">
-{{ formset.management_form }}
-	{% csrf_token %}
-	<div class="col-md">
-		<div class="card mb-3">
-			<div class="card-header"><i class="far fa-clock"></i> Ustvari dogodek</div>
-			<div class="card-body">
-{% for error in form.non_field_errors %}
-				<div class="alert alert-danger">
-					{{ error|escape }}
-				</div>
-{% endfor %}
-{% for field in form %}{% for error in field.errors %}
-				<div class="alert alert-danger">
-					<strong>{{ field.name }} </strong> - {{ error|escape }}
-				</div>
-{% endfor %}{% endfor %}
+    <form action="" method="POST" class="row">
+        {{ formset.management_form }}
+        {% csrf_token %}
+        <div class="col-md">
+            <div class="card mb-3">
+                <div class="card-header"><i class="far fa-clock"></i> Ustvari dogodek</div>
+                <div class="card-body">
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ error|escape }}
+                        </div>
+                    {% endfor %}
+                    {% for field in form %}{% for error in field.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ field.name }} </strong> - {{ error|escape }}
+                        </div>
+                    {% endfor %}{% endfor %}
 
-				<div class="form-group row">
-					<label for="naslov" class="col-sm-3 col-form-label" required>Naslov:</label>
-					<div class="col-sm">
-						<input type="text" class="form-control" name="naslov" value="{{ form.naslov.value|default:"" }}" required>
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="datum" class="col-sm-3 col-form-label">Datum:</label>
-					<div class="col-sm">
-						<input type="date" class="form-control" name="datum" value="{{ form.datum.value|date:"Y-m-d"|default:"" }}" required>
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="rok_prijave" class="col-sm-3 col-form-label">Rok prijave:</label>
-					<div class="col-sm">
-						<input type="date" class="form-control" name="rok_prijave" value="{{ form.rok_prijave.value|date:"Y-m-d"|default:"" }}" required>
-					</div>
-				</div>
-				<div class="form-group" style="margin: 0 -15px">
-					<label for="opis" class="col-sm-3 col-form-label">Opis:</label>
-					<div class="col-sm">
-						<textarea class="form-control" name="opis">{{ form.opis.value|default:"" }}</textarea>
-					</div>
-				</div>
-				<button type="submit" class="btn btn-primary mt-4 float-right"><i class="fas fa-save"></i> Shrani</button>
-			</div>
-		</div>
+                    <div class="form-group row">
+                        <label for="naslov" class="col-sm-3 col-form-label" required>Naslov:</label>
+                        <div class="col-sm">
+                            <input type="text" class="form-control" name="naslov"
+                                   value="{{ form.naslov.value|default:"" }}" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="datum" class="col-sm-3 col-form-label">Datum:</label>
+                        <div class="col-sm">
+                            <input type="date" class="form-control" name="datum"
+                                   value="{{ form.datum.value|date:"Y-m-d"|default:"" }}" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="rok_prijave" class="col-sm-3 col-form-label">Rok prijave:</label>
+                        <div class="col-sm">
+                            <input type="date" class="form-control" name="rok_prijave"
+                                   value="{{ form.rok_prijave.value|date:"Y-m-d"|default:"" }}" required>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin: 0 -15px">
+                        <label for="opis" class="col-sm-3 col-form-label">Opis:</label>
+                        <div class="col-sm">
+                            <textarea class="form-control" name="opis">{{ form.opis.value|default:"" }}</textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-4 float-right"><i class="fas fa-save"></i> Shrani
+                    </button>
+                </div>
+            </div>
 
-		<div class="card">
-			<div class="card-header"><i class="far fa-clipboard"></i> Povabljeni</div>
-			<ul class="list-group list-group-flush">
-			<div class="card-body">
-				<p class="card-text">Povabila lahko upravljate v <a href="{% url "admin:dogodki_app_povabilo_changelist" %}?dogodek__id__exact={{ object.pk }}">administratorskem vmesniku</a>.</p>
-			</div>
-{% comment %} {% for povabilo in dogodek.povabljeni.all %}
+            <div class="card">
+                <div class="card-header"><i class="far fa-clipboard"></i> Povabljeni</div>
+                <ul class="list-group list-group-flush">
+                    <div class="card-body">
+                        <p class="card-text">Povabila lahko upravljate v <a
+                                href="{% url "admin:dogodki_app_povabilo_changelist" %}?dogodek__id__exact={{ object.pk }}">administratorskem
+                            vmesniku</a>.</p>
+                    </div>
+                    {% comment %} {% for povabilo in dogodek.povabljeni.all %}
 				<li class="list-group-item d-flex justify-content-between">
 					Miha Frangež, 4. ag
 					<button type="button" class="btn btn-sm btn-danger"><i class="fas fa-times"></i></button>
 				</li>
 			</ul>
 {% endfor %} {% endcomment %}
-		</div>
-	</div>
+            </div>
+        </div>
 
-	<div class="col-md">
-		<h3>Skupine</h3>
-{% for skupina in formset %}{% with counter=forloop.counter0 %}
-{% include "dogodki/skupina_form.html" %}
-{% endwith %}{% endfor %}
-		<button type="button" class="btn btn-lg btn-block mt-3 btn-light" id="nova-skupina"><i class="fas fa-plus"></i></button>
-	</div>
-</form>
+        <div class="col-md">
+            <h3>Skupine</h3>
+            {% for skupina in formset %}{% with counter=forloop.counter0 %}
+                {% include "dogodki/skupina_form.html" %}
+            {% endwith %}{% endfor %}
+            <button type="button" class="btn btn-lg btn-block mt-3 btn-light" id="nova-skupina"><i
+                    class="fas fa-plus"></i></button>
+        </div>
+    </form>
 
-<script>
-window.onload = () => {
-	$("#nova-skupina").click(evt => {
-		let counter = parseInt($("#id_skupine-TOTAL_FORMS").val());
-{% with "${counter}" as counter %}
-		let template = `{% include "dogodki/skupina_form.html" %}`;
-{% endwith %}
-		$(template).insertBefore("#nova-skupina");
+    <script>
+        window.onload = () => {
+            $("#nova-skupina").click(evt => {
+                let counter = parseInt($("#id_skupine-TOTAL_FORMS").val());
+                {% with "${counter}" as counter %}
+                    let template = `{% include "dogodki/skupina_form.html" %}`;
+                {% endwith %}
+                $(template).insertBefore("#nova-skupina");
 
-		$("#id_skupine-TOTAL_FORMS").val(counter + 1);
-	});
-};
-</script>
+                $("#id_skupine-TOTAL_FORMS").val(counter + 1);
+            });
+        };
+    </script>
 {% endblock main %}
