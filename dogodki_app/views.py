@@ -82,7 +82,7 @@ class DogodekView(LoginRequiredMixin, DetailView):
 			for prijava in prijavljeni:
 				obj_prijava = {
 					"uporabnik": prijava.uporabnik,
-					"sanitiziran_oddelek": f" ({prijava.uporabnik.oddelek})" if is_staff else "",
+					"oddelek": prijava.uporabnik.oddelek,
 					"jaz": False
 				}
 

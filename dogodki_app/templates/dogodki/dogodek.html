@@ -55,7 +55,11 @@
 				<button type="submit" name="skupina" value="" class="btn btn-sm btn-danger">Odjava</button>
 			</li>
 		{% else %}
-			<li class="list-group-item list-group-item-light">{{ prijava.uporabnik }}{{ prijava.sanitiziran_oddelek }}</li>
+            {% if not is_staff %}
+			    <li class="list-group-item list-group-item-light">{{ prijava.uporabnik }}</li>
+            {% else %}
+			    <li class="list-group-item list-group-item-light">{{ prijava.uporabnik }} ({{ prijava.oddelek }})</li>
+            {% endif %}
 		{% endif %}
 	{% endfor %}
 	{% if not skupina.moja %}
